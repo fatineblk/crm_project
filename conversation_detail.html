@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-container {
+            background-color: #031224;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #031224;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .nav .logo i {
+            margin-right: 10px;
+        }
+
+        .nav .logo a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+
+        .nav .nav-links a:hover {
+            color: #d4d4d4;
+        }
+
+        .nav .right-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav .right-section .search-input {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 200px;
+            display: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .nav .right-section .search-input.show-search {
+            display: block;
+        }
+
+        .nav .right-section .profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav .right-section .profile .info {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .nav .right-section .profile .info i {
+            margin-left: 10px;
+        }
+
+        .nav .right-section .profile .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #fff;
+            color: #000;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: none;
+            min-width: 150px;
+            z-index: 1000;
+        }
+
+        .nav .right-section .profile .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .nav .right-section .profile .dropdown-menu a:hover {
+            background-color: #f0f4f8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #031224;
+            margin-bottom: 20px;
+        }
+
+        .messages {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .message.sender {
+            background-color: #d1e7ff;
+            align-self: flex-end;
+        }
+
+        .message.receiver {
+            background-color: #f1f1f1;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #888;
+            margin-left: 10px;
+        }
+
+        .message-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .message-input textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            resize: none;
+        }
+
+        .message-input button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .message-input button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Auto-scroll to the latest message */
+        .messages {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-container">
+        <!-- Navigation -->
+        <div class="nav">
+            <div class="logo">
+                <i class='bx bxl-codepen'></i>
+                <a>WEBRASMA&Digital Rankin</a>
+            </div>
+
+            <div class="nav-links">
+                <a>Home</a>
+                <a href="{% url 'lead_actions' %}">Leads</a>
+                <a href="{% url 'appointments_list' %}">Appointments</a>
+                <a href="{% url 'conversation_list'%}">Discussions</a>
+            </div>
+
+            <div class="right-section">
+                <i class='bx bx-bell'></i> <!-- pour notifications -->
+                <i class='bx bx-search' id="search-icon" onclick="toggleSearch()"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input">
+                <script>
+                    function toggleSearch() {
+                        var searchInput = document.getElementById("searchInput");
+                        searchInput.classList.toggle("show-search");
+                        searchInput.focus(); 
+                    }
+                </script>
+                <div class="profile">
+                    <div class="info">
+                        <a >Bienvenue {{ user.username }}</a>
+                        <i class='bx bx-chevron-down' onclick="toggleMenu()"></i>
+                    </div>
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <a href="#" class="logout" onclick="logout()">Déconnexion</a>
+                    </div>
+                </div>
+            
+                <script>
+                    function toggleMenu() {
+                        const menu = document.getElementById('dropdownMenu');
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    }
+            
+                    function logout() {
+                        // Logique de déconnexion
+                        window.location.href = '/logout'; // Assurez-vous que l'URL de déconnexion est correcte
+                    }
+                </script>
+                
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="header">Conversation with {{ message.sender }}</div>
+            <div class="messages">
+                {% for message in conversation.messages.all|dictsortreversed:"timestamp" %}
+                <div class="message {% if message.sender == user %}sender{% else %}receiver{% endif %}">
+                    <p>{{ message.content }}</p>
+                    <div class="timestamp">{{ message.timestamp|date:"H:i" }}</div>
+                    {% if message.file %}
+                    <div class="file-attachment">
+                        <a href="{{ message.file.url }}" download>{{ message.file.name }}</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="message-input">
+                <form method="post" id="messageForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <textarea name="content" rows="1" placeholder="Type a message..." id="messageTextarea" ></textarea>
+                    
+                    <input type="file" name="file" id="fileInput" style="display:none;">
+                    <button class='bx bx-file' type="button" id="attachButton"></button>
+                    <button class='bx bxs-send' type="submit"></button>
+
+                </form>
+                
+            </div>
+            
+            <script>
+                document.getElementById('messageTextarea').addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter' && !event.shiftKey) { 
+                        event.preventDefault(); 
+                        document.getElementById('messageForm').submit(); 
+                    }
+                });
+                
+                document.getElementById('attachButton').addEventListener('click', function() {
+                    document.getElementById('fileInput').click(); // Open the file dialog
+                });
+            </script>
+        </div>
+        
+    </div>
+
+    <!-- Auto-scroll to the latest message -->
+    <script>
+        const messagesContainer = document.querySelector('.messages');
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    </script>
+</body>
+</html>
