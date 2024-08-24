@@ -1,0 +1,134 @@
+<!-- leads/templates/leads/lead_form.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Réserver un Rendez-vous</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <style>
+            /* Importation de la police */
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+    
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif;
+            }
+    
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+                background-color: #031224;
+                color: #f1f3f2;
+            }
+    
+            .container {
+                padding: 20px;
+                background-color: #1d283c;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                max-width: 800px;
+                margin: auto;
+            }
+    
+            h1 {
+                margin-bottom: 20px;
+                color: #fff;
+                font-size: 1.75rem;
+                text-align: center;
+            }
+    
+            .form-group label {
+                color: #ccc;
+                font-weight: 500;
+            }
+    
+            .form-control {
+                background-color: #1d283c;
+                color: #fff;
+                border: 1px solid #1a2131;
+                border-radius: 4px;
+                padding: 10px;
+            }
+    
+            .form-control:focus {
+                border-color: #2869ff;
+                box-shadow: none;
+            }
+    
+            .form-control::placeholder {
+                color: #888;
+            }
+    
+            .btn-primary {
+                background-color: #2869ff;
+                border: none;
+                border-radius: 4px;
+                padding: 10px 20px;
+                font-weight: 500;
+            }
+    
+            .btn-primary:hover {
+                background-color: #1e54d4;
+            }
+    
+            .flatpickr-calendar {
+                background: #1d283c;
+                color: #f1f3f2;
+                border-radius: 8px;
+                padding: 10px;
+            }
+    
+            .flatpickr-day {
+                color: #f1f3f2;
+            }
+    
+            .flatpickr-day.selected,
+            .flatpickr-day.today {
+                background: #2869ff;
+                color: #fff;
+                border-radius: 50%;
+            }
+    
+            .flatpickr-day:hover {
+                background: #1e54d4;
+            }
+    
+            .flatpickr-confirm {
+                background-color: #2869ff;
+                color: #fff;
+                border: none;
+                padding: 5px 10px;
+                margin-top: 10px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+    
+            .flatpickr-confirm:hover {
+                background-color: #1e54d4;
+            }
+            
+        </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ajouter un Lead</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+</body>
+</html>

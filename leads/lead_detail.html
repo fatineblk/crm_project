@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail du Lead</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .header-background {
+            background-image: url('https://images.unsplash.com/photo-1579267217516-b73084bd79a6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8); /* Légèrement opaque pour l'effet glassy */
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 700px;
+            margin-top: 150px; /* Décalage pour ne pas chevaucher l'image */
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .lead-detail p {
+            font-size: 1.1em;
+            margin: 12px 0;
+            color: #555;
+        }
+
+        .lead-detail p strong {
+            color: #333;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #007bff;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .action-buttons a:hover {
+            background-color: #0056b3;
+        }
+
+        .action-buttons .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .action-buttons .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .lead-detail p {
+                font-size: 1em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-background"></div>
+    <div class="container">
+        <h1>{{ lead.first_name }} {{ lead.last_name }}</h1>
+        <div class="lead-detail">
+            <p><strong>Email:</strong> {{ lead.email }}</p>
+            <p><strong>Téléphone:</strong> {{ lead.phone }}</p>
+            <p><strong>Source:</strong> {{ lead.get_source_display }}</p>
+            <p><strong>Statut:</strong> {{ lead.get_status_display }}</p>
+            <p><strong>Note:</strong> {{ lead.note }}</p>
+            <p><strong>Date de création:</strong> {{ lead.created_at }}</p>
+        </div>
+        <div class="action-buttons">
+            <a href="{% url 'lead_edit' lead.id %}" class="btn-edit">Modifier</a>
+            <a href="{% url 'lead_delete' lead.id %}" class="btn-delete">Supprimer</a>
+        </div>
+    </div>
+</body>
+</html>

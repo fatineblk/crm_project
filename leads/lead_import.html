@@ -1,0 +1,15 @@
+<!-- leads/templates/leads/lead_import.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Importer des Leads</title>
+</head>
+<body>
+    <h1>Importer des Leads</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="csv_file">
+        <button type="submit">Importer</button>
+    </form>
+</body>
+</html>

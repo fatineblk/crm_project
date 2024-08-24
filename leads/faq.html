@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap">
+    <style>
+        :root {
+            --textBlue: hsl(238, 29%, 16%);
+            --textRed: hsl(14, 88%, 65%);
+            --textVeryDarkBlue: hsl(237, 12%, 33%);
+            --textDarkBlue: hsl(240, 6%, 50%);
+            --gradientBlue: hsl(240, 73%, 65%); /* Modifié pour le fond bleu */
+            --dividerGray: hsl(240, 5%, 91%);
+        }
+
+        html {
+            box-sizing: border-box;
+            font-size: 62.5%;
+        }
+
+        *, *::after, *::before {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Kumbh Sans", sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            background: linear-gradient(var(--gradientBlue), var(--gradientBlue)); /* Modifié pour le fond bleu */
+        }
+
+        main {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 2.5rem;
+            min-width: 33rem;
+            max-width: 92rem;
+            margin: 0 2.5rem 6rem;
+            padding: 0 2.3rem 4.8rem;
+            background-image: url("https://raw.githubusercontent.com/MizAndhre/FAQ-accordion-card/2ff2a02d093554f14d0390a409e825669313a16e/images/bg-pattern-mobile.svg");
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: 24rem;
+        }
+
+        .card__box {
+            display: none;
+        }
+
+        .card__img {
+            position: relative;
+        }
+
+        .card__img-mobile {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(-60%);
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 24rem;
+        }
+
+        .card__img-desktop {
+            display: none;
+        }
+
+        .card__text {
+            margin-top: 12.9rem;
+        }
+
+        h1 {
+            margin: 0;
+            padding-bottom: 1.5rem;
+            font-size: 3.3rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--textBlue);
+        }
+
+        .accordion__item {
+            border-bottom: 0.1rem solid var(--dividerGray);
+        }
+
+        .accordion__item h2 {
+            margin: 0;
+        }
+
+        .accordion__title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1.45rem 0.5rem;
+            border: none;
+            background: none;
+            font-family: "Kumbh Sans", sans-serif;
+            font-size: 1.4rem;
+            color: var(--textVeryDarkBlue);
+            text-align: left;
+            transition: all 300ms ease-in-out;
+        }
+
+        .accordion__title:focus, .accordion__title:focus-visible {
+            z-index: 3;
+            outline: solid rgba(255, 146, 113, 0.5);
+            box-shadow: 0 0 0.4rem 0.4rem rgba(161, 72, 45, 0.25);
+            border-radius: 0.3rem;
+        }
+
+        .accordion__title:hover {
+            cursor: pointer;
+            color: var(--textRed);
+        }
+
+        .accordion__title::after {
+            content: "";
+            display: block;
+            width: 1rem;
+            height: 0.6rem;
+            background-image: url("https://raw.githubusercontent.com/MizAndhre/FAQ-accordion-card/2ff2a02d093554f14d0390a409e825669313a16e/images/icon-arrow-down.svg");
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            transition: transform 300ms ease-in-out;
+        }
+
+        .accordion__text {
+            text-align: left;
+            padding: 0.5rem 3rem 2.2rem 0.5rem;
+            line-height: 1.5;
+            color: var(--textDarkBlue);
+        }
+
+        .accordion__title.open {
+            font-weight: 700;
+            color: var(--textBlue);
+        }
+
+        .accordion__title.open::after {
+            transform: rotate(180deg);
+        }
+
+        .accordion__collapse.collapse {
+            display: none;
+        }
+
+        .accordion__collapse.collapsing {
+            height: 0;
+            overflow: hidden;
+            transition: height 1s ease;
+        }
+
+        .accordion__collapse.open {
+            display: block;
+        }
+
+        @media (min-width: 56em) {
+            .card {
+                position: relative;
+                display: flex;
+                padding: 6.1rem 9.4rem 8.4rem 0;
+                margin: 0;
+                background-image: url("https://raw.githubusercontent.com/MizAndhre/FAQ-accordion-card/2ff2a02d093554f14d0390a409e825669313a16e/images/bg-pattern-desktop.svg");
+                background-size: 100%;
+                background-position: -53rem -28rem;
+            }
+
+            .card__box {
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: 57%;
+                left: 0;
+                transform: translateX(-50%) translateY(-50%);
+            }
+
+            .card__img, .card__text {
+                flex: 1;
+            }
+
+            .card__img {
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                padding-right: 9.2rem;
+            }
+
+            .card__img-mobile {
+                display: none;
+            }
+
+            .card__img-desktop {
+                display: block;
+                max-width: 47.2rem;
+                transform: translateX(-8.4rem);
+            }
+
+            .card__text {
+                margin-top: 0;
+            }
+
+            h1 {
+                padding-bottom: 2.1rem;
+                text-align: left;
+            }
+
+            .accordion__title {
+                font-size: 1.5rem;
+            }
+
+            .accordion__text {
+                line-height: 1.4;
+                padding: 0.5rem 3rem 2rem 0.5rem;
+            }
+        }
+
+        footer {
+            text-align: center;
+            font-size: 1.5rem;
+            padding-bottom: 2rem;
+            color: var(--dividerGray);
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 200ms ease-in-out;
+            font-weight: 700;
+        }
+
+        footer a:hover {
+            color: var(--textRed);
+        }
+
+        .icons i {
+            margin-top: 1rem;
+            font-size: 2.5rem;
+            padding-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="card">
+            <img src="https://raw.githubusercontent.com/MizAndhre/FAQ-accordion-card/2ff2a02d093554f14d0390a409e825669313a16e/images/illustration-box-desktop.svg" alt="Box" class="card__box" />
+            <div class="card__img">
+                <img class="card__img-mobile" src="https://raw.githubusercontent.com/MizAndhre/FAQ-accordion-card/2ff2a02d093554f14d0390a409e825669313a16e/images/illustration-woman-online-mobile.svg" alt="Woman online Mobile" />
+                <img class="card__img-desktop" src="https://raw.githubusercontent.com/MizAndhre/FAQ-accordion-card/2ff2a02d093554f14d0390a409e825669313a16e/images/illustration-woman-online-desktop.svg" alt="Woman online desktop" />
+            </div>
+
+            <div class="card__text">
+                <h1>FAQ</h1>
+                <div class="accordion" id="faqAccordion">
+                    <!-- Question 1 -->
+                    <div class="accordion__item">
+                        <button class="accordion__title">
+                            Comment changer mon mot de passe ?
+                            
+                        </button>
+                        <div class="accordion__collapse collapse">
+                            <div class="accordion__text">
+                                Pour changer votre mot de passe, accédez à la section "Mon profil" dans les paramètres de votre compte et sélectionnez "Changer le mot de passe". Vous devrez entrer votre mot de passe actuel, puis votre nouveau mot de passe.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="accordion__item">
+                        <button class="accordion__title">
+                            Comment récupérer un mot de passe oublié ?
+                            
+                        </button>
+                        <div class="accordion__collapse collapse">
+                            <div class="accordion__text">
+                                Si vous avez oublié votre mot de passe, cliquez sur le lien "Mot de passe oublié" sur la page de connexion. Vous recevrez un e-mail avec des instructions pour réinitialiser votre mot de passe.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="accordion__item">
+                        <button class="accordion__title">
+                            Comment puis-je importer des leads ?
+                            
+                        </button>
+                        <div class="accordion__collapse collapse">
+                            <div class="accordion__text">
+                                Pour importer des leads, allez dans la section "Leads" de votre tableau de bord et cliquez sur "Importer". Vous pourrez alors télécharger un fichier CSV contenant les informations de vos leads.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="accordion__item">
+                        <button class="accordion__title">
+                            Puis-je synchroniser les rendez-vous avec Google Calendar ?
+                            
+                        </button>
+                        <div class="accordion__collapse collapse">
+                            <div class="accordion__text">
+                                Oui, vous pouvez synchroniser vos rendez-vous avec Google Calendar. Allez dans les paramètres de votre calendrier et suivez les instructions pour connecter votre compte Google.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="accordion__item">
+                        <button class="accordion__title">
+                            Quels types de supports sont disponibles ?
+                            
+                        </button>
+                        <div class="accordion__collapse collapse">
+                            <div class="accordion__text">
+                                Nous offrons une assistance par e-mail et chat en direct. Vous pouvez nous contacter à tout moment pour toute question ou problème.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 6 -->
+                    <div class="accordion__item">
+                        <button class="accordion__title">
+                            Comment contacter le support technique ?
+                            
+                        </button>
+                        <div class="accordion__collapse collapse">
+                            <div class="accordion__text">
+                                Pour contacter le support technique, rendez-vous dans la section "Support" de votre tableau de bord et envoyez un message via le formulaire de contact.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2024 WEBRASMA & Digital Ranking. Tous droits réservés. <br>
+        <a href="#">Politique de confidentialité</a> | <a href="#">Conditions d'utilisation</a>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.accordion__title').forEach((item) => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                const content = parent.querySelector('.accordion__collapse');
+                const isOpen = content.classList.contains('open');
+
+                document.querySelectorAll('.accordion__collapse').forEach((el) => {
+                    el.classList.remove('open');
+                    el.classList.add('collapse');
+                });
+                document.querySelectorAll('.accordion__title').forEach((el) => {
+                    el.classList.remove('open');
+                });
+
+                if (!isOpen) {
+                    content.classList.remove('collapse');
+                    content.classList.add('open');
+                    item.classList.add('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
