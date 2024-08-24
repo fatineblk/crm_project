@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* Importation de la police */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: #f1f3f2;
+            font-size: 14px;
+        }
+
+        canvas {
+            width: 100% !important;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        :root {
+            --app-bg: #031224;
+            --table-border: #1a2131;
+            --table-header: #1a2131;
+            --app-content-main-color: #fff;
+            --action-color: #2869ff;
+            --action-color-hover: #6291fd;
+            --app-content-secondary-color: #1d283c;
+            --filter-reset: #2c394f;
+            --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+
+        body {
+            background-image: url('https://images.unsplash.com/photo-1496096265110-f83ad7f96608?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        
+        
+        
+        .top-container {
+        background: #031224;
+        border-radius: 0 0 30px 30px;
+        padding-bottom: 10px;
+    }
+
+        .top-container .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 14px;
+            border-bottom: none;
+        }
+
+        .top-container .nav .logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-container .nav .logo i {
+            color: #f1f3f2;
+            font-size: 24px;
+        }
+
+        .top-container .nav .logo a {
+            font-size: 16px;
+        }
+
+        .top-container .nav .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .top-container .nav .nav-links a {
+            color: #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .top-container .nav .nav-links a:hover {
+            color: none;
+        }
+
+        .top-container .nav .right-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-container .nav .right-section > i {
+            color: #f1f3f2;
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px;
+        }
+
+        .profile .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile .info a {
+            font-size: 13px;
+            color: #f1f3f2;
+            text-decoration: none;
+        }
+
+        .profile .info i {
+            color: #f1f3f2;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .top-container .nav .right-section .profile {
+            display: flex;
+            align-items: center;
+            background: #1e293b;
+            padding: 0 10px;
+            border-radius: 50px;
+            gap: 10px;
+        }
+
+        .top-container .nav .right-section .profile .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-container .nav .right-section .profile .info img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #f1f3f2;
+        }
+
+        .top-container .nav .right-section .profile .info a {
+            font-size: 13px;
+        }
+
+        .top-container .nav .right-section .profile .info p {
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .top-container .nav .right-section .profile>i {
+            color: #f1f3f2;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+
+        .actions-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            
+            
+        }
+
+        .search-bar {
+            background-color: var(--app-content-secondary-color);
+            border: 1px solid var(--app-content-secondary-color);
+            color: var(--app-content-main-color);
+            border-radius: 4px;
+            padding: 8px 16px;
+            width: 300px;
+        }
+        
+
+        .filter-menu {
+            display: none;
+        }
+        
+        .filter-menu.active {
+            display: block;
+        }
+        
+
+        .filter-button-wrapper {
+            position: relative;
+        }
+
+        .filter-button-wrapper.active .filter-menu {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            padding: 0 20px;
+            backdrop-filter: blur(5px); /* Appliquer un effet flou */
+            background: rgba(0, 0, 0, 0.3); /* Couleur de fond sombre semi-transparente pour l'effet glassy */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Ajout d'une ombre légère */
+            border-radius: 10px; /* Coins arrondis */
+        }
+        
+        
+        table thead {
+            background-color: rgba(42, 42, 42, 0.8); /* Couleur de fond avec transparence pour l'effet glassy */
+            color: #FFF; /* Couleur du texte blanche */
+            backdrop-filter: blur(5px); /* Appliquer un effet flou au header */
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            color: #FFF; /* Couleur du texte blanche */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Bordure avec transparence pour un effet glassy */
+        }
+        
+        tr{
+            background-color: var(--app-content-secondary-color);}
+
+        th {
+            background-color: var(--table-header);
+        }
+
+        .btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 4px;
+        }
+
+        .btn-primary { background-color: var(--action-color); color: #fff; }
+        .btn-primary:hover { background-color: var(--action-color-hover); }
+        .btn-secondary { background-color: #6c757d; color: #fff; }
+
+        .bottom-container {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .bottom-container .prog-status,
+        .bottom-container .popular,
+        .bottom-container .upcoming {
+            background: #fefefe;
+            padding: 20px;
+            border-radius: 24px;
+        }
+
+        .bottom-container .prog-status {
+            width: 50%;
+        }
+
+        .bottom-container .prog-status .header,
+        .bottom-container .popular .header,
+        .bottom-container .upcoming .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .bottom-container .prog-status .header h4,
+        .bottom-container .popular .header h4,
+        .bottom-container .upcoming .header h4 {
+            font-weight: 600;
+        }
+
+        .bottom-container .prog-status .header .tabs {
+            background: #f3f3f3;
+            padding: 4px;
+            border-radius: 20px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .bottom-container .prog-status .header .tabs a {
+            padding: 4px 20px;
+            font-size: 12px;
+            color: #000;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .bottom-container .prog-status .header .tabs a.active {
+            background: #fff;
+        }
+
+        .bottom-container .prog-status .details {
+            display: flex;
+            margin-bottom: 60px;
+        }
+
+        .bottom-container .prog-status .details .item {
+            flex: 1;
+        }
+
+        .bottom-container .prog-status .details .item .graph {
+            height: 140px;
+            margin-bottom: 20px;
+        }
+
+        .bottom-container .prog-status .details .item p {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .bottom-container .prog-status .details .item:nth-child(2) {
+            padding: 0 20px;
+            border-left: 1px solid #d2d3d6;
+            border-right: 1px solid #d2d3d6;
+        }
+
+        .bottom-container .prog-status .class-ranking {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border: 2px solid #d2d3d6;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+
+        .bottom-container .prog-status .class-ranking .image {
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .bottom-container .prog-status .class-ranking .info {
+            flex: 1;
+        }
+
+        .bottom-container .prog-status .class-ranking .info .name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .bottom-container .prog-status .class-ranking .info .rank {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .bottom-container .prog-status .class-ranking .action {
+            text-align: center;
+        }
+
+        .bottom-container .prog-status .class-ranking .action .btn-primary {
+            font-size: 12px;
+        }
+
+        .bottom-container .prog-status .class-ranking .action .btn-primary:hover {
+            background: #c5c5c5;
+            color: #000;
+        }
+
+        .bottom-container .popular ul,
+        .bottom-container .upcoming ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .bottom-container .popular ul li,
+        .bottom-container .upcoming ul li {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e2e2;
+            padding: 10px 0;
+        }
+
+        .bottom-container .popular ul li:last-child,
+        .bottom-container .upcoming ul li:last-child {
+            border-bottom: none;
+        }
+
+        .bottom-container .popular ul li a,
+        .bottom-container .upcoming ul li a {
+            color: #000;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .bottom-container .popular ul li span,
+        .bottom-container .upcoming ul li span {
+            font-size: 12px;
+            color: #5f6368;
+        }
+      .app-content-actions-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+            background: var(--app-bg);
+
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .app-content-actions-wrapper .actions-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .app-content-actions-wrapper .actions-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-content-actions-wrapper .actions-left button {
+            background-color: var(--action-color);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .app-content-actions-wrapper .actions-left button:hover {
+            background-color: var(--action-color-hover);
+        }
+
+        .app-content-actions-wrapper .actions-right .btn-secondary {
+            background-color: var(--filter-reset);
+            color: #fff;
+        }
+
+        .app-content-actions-wrapper .actions-right .btn-secondary:hover {
+            background-color: #031224;
+        }
+
+        .app-content-actions-wrapper .actions-left .add-import-buttons {
+            display: flex;
+            gap: 8px;
+        }
+      .prog-status {
+        width: 80%; /* Adjust the width as needed */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding for better spacing */
+        /* Semi-transparent white background */
+        border-radius: 8px; /* Add rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        text-align: center; /* Center the text inside the container */
+        backdrop-filter: blur(1px);
+}
+
+.prog-status .header h4 {
+    margin-bottom: 10px; /* Add space below the header */
+    font-size: 2rem; /* Increase the font size (adjust as needed) */
+    color: #000; /* Initial color (black) */
+    animation: colorChange 4s infinite; /* Apply the color animation */
+}
+
+/* Define the color change animation */
+@keyframes colorChange {
+    20% {
+        color: #0000ff; /* Initial color (blue) */
+    }
+    50% {
+        color: #000; /* Change to black */
+    }
+    
+    }
+    50% {
+        color: #555555; /* Change to dark gray */
+    }
+    100% {
+        color: #0000ff; /* Return to blue */
+    }
+
+
+
+
+
+.prog-status .tabs {
+    display: flex;
+    justify-content: center; /* Center the tabs within the container */
+    gap: 15px; /* Add space between the tabs */
+}
+
+.prog-status .tabs a {
+    padding: 10px 15px; /* Add padding to the tabs */
+    border-radius: 5px; /* Round the corners of the tabs */
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Set the text color */
+    transition: background-color 0.3s; /* Smooth transition for hover effects */
+}
+
+.prog-status .tabs a.active {
+    background-color: #007bff; /* Active tab background color */
+    color: #ffffff; /* Active tab text color */
+}
+
+.prog-status .tabs a:hover {
+    background-color: #f0f0f0; /* Hover background color */
+}
+      .btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+
+.btn-primary:hover {
+    background-color: var(--action-color-hover);
+}
+
+
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade for hover */
+}
+
+
+.btn-warning:hover {
+    background-color: #e0a800; /* Darker shade for hover */
+}
+
+.btn-info:hover {
+    background-color: #138496; /* Darker shade for hover */
+}
+
+
+.btn-danger:hover {
+    background-color: #c82333; /* Darker shade for hover */
+}
+.search-input {
+    display: none;
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 10px;
+    transition: display 0.3s ease;
+}
+
+.show-search {
+    display: inline-block;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: #031224;
+    color: #f1f3f2;
+    border-radius: 8px;
+    padding: 10px;
+    width: 120px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    color: #f1f3f2;
+    text-decoration: none;
+    display: block;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.dropdown-menu a:hover {
+    background: #0ea5e9;
+}
+/* Wrapper for filter button and menu */
+.filter-button-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Button styling */
+.filter-button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-button i {
+    margin-right: 5px;
+}
+
+/* Filter menu styling */
+.filter-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 15px;
+    width: 220px;
+}
+
+/* Each filter item styling */
+.filter-item {
+    margin-bottom: 15px;
+}
+
+.filter-item:last-child {
+    margin-bottom: 0;
+}
+
+.filter-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-item select,
+.filter-item input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Show filter menu */
+.filter-button-wrapper.active .filter-menu {
+    display: block;
+}
+.mydict {
+    margin-top: 20px;
+}
+
+.mydict div {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    justify-content: center;
+}
+
+.mydict input[type="radio"] {
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.mydict input[type="radio"]:checked + span {
+    box-shadow: 0 0 0 0.0625em #0043ed;
+    background-color: #dee7ff;
+    z-index: 1;
+    color: #0043ed;
+}
+
+label span {
+    display: block;
+    cursor: pointer;
+    background-color: #fff;
+    padding: 0.375em .75em;
+    position: relative;
+    margin-left: .0625em;
+    box-shadow: 0 0 0 0.0625em #b5bfd9;
+    letter-spacing: .05em;
+    color: #3e4963;
+    text-align: center;
+    transition: background-color .5s ease;
+}
+
+label:first-child span {
+    border-radius: .375em 0 0 .375em;
+}
+
+label:last-child span {
+    border-radius: 0 .375em .375em 0;
+}
+
+    </style>
+</head>
+<body>
+    
+    <div class="top-container">
+        <div class="nav">
+            <div class="logo">
+                <i class="bx bxl-codepen"></i>
+                <a>WEBRASMA&amp;Digital Rankin</a>
+            </div>
+            
+            <div class="nav-links">
+                <a href= "/leads">Home</a>
+                <a href="{% url 'lead_actions' %}">Leads</a>
+                <a href="{% url 'appointments_list' %}">Appointments</a>
+                <a href="{% url 'conversation_list'%}">Discussions</a>
+            </div>
+            <div class="right-section">
+                <i class='bx bx-bell'></i>
+                <i class='bx bx-search' id="search-icon" onclick="toggleSearch()"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input">
+                    <script>
+                        function toggleSearch() {
+                            var searchInput = document.getElementById("searchInput");
+                            searchInput.classList.toggle("show-search");
+                            searchInput.focus(); // Optionnel: place le focus sur le champ de recherche
+                        }
+                    </script>
+                <div class="profile">
+                    <div class="info">
+                        <a >Bienvenue {{ user.username }}</a>
+                        <i class='bx bx-chevron-down' onclick="toggleMenu()"></i>
+                    </div>
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <a href="#" class="logout" onclick="logout()">Déconnexion</a>
+                    </div>
+                </div>
+            
+                <script>
+                    function toggleMenu() {
+                        const menu = document.getElementById('dropdownMenu');
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    }
+            
+                    function logout() {
+                        // Logique de déconnexion
+                        window.location.href = '/logout'; // Assurez-vous que l'URL de déconnexion est correcte
+                    }
+                </script>
+                
+            </div>
+        </div>
+    </div>
+   
+             
+
+            
+            
+        
+    
+
+</div>
+<div class="prog-status">
+    <form method="get" action="{% url 'lead_actions' %}">
+        <div class="filter-button-wrapper">
+            <button type="button" class="filter-button" onclick="toggleFilterMenu()">
+                <i class="fas fa-filter">Filter</i>
+            </button>
+            <div class="filter-menu">
+                <div class="filter-item">   
+                    <label for="status">Statut:</label>
+                    <select name="status" id="status">
+                        <option value="all" {% if status_filter == 'all' %}selected{% endif %}>Tout</option>
+                        <option value="nouveau" {% if status_filter == 'nouveau' %}selected{% endif %}>Nouveau</option>
+                        <option value="contacté" {% if status_filter == 'contacté' %}selected{% endif %}>Contacté</option>
+                        <option value="converti" {% if status_filter == 'converti' %}selected{% endif %}>Converti</option>
+                        <option value="perdu" {% if status_filter == 'perdu' %}selected{% endif %}>Perdu</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="created_at">Date de Création:</label>
+                    <input type="date" name="created_at" id="created_at" value="{{ created_at_filter }}">
+                </div>
+                <div class="filter-item">
+                    <button type="submit" class="btn btn-primary">Appliquer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    <div class="actions-container">
+    <div class="actions-right">
+        <a href="{% url 'lead_add' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Ajouter un Lead
+        </a>
+        <a href="{% url 'lead_import' %}" class="btn btn-secondary">
+            <i class="fas fa-file-export"></i> Exporter des Leads
+        </a>
+    </div>
+
+</div>
+<div class="header"> 
+    <h4>Liste des leads</h4>
+</div>
+    <form method="get" action="">
+        <div class="mydict">
+            <div>
+                <label>
+                    <input type="radio" name="radio" checked="">
+                    <span>Tous</span>
+                </label>
+                <label>
+                    <input type="radio" name="radio">
+                    <span>Nouveau</span>
+                </label>
+                <label>
+                    <input type="radio" name="radio">
+                    <span>Contacté</span>
+                </label>
+                <label>
+                    <input type="radio" name="radio">
+                    <span>Converti</span>
+                </label>
+                <label>
+                    <input type="radio" name="radio">
+                    <span>Perdu</span>
+                </label>
+                
+            </div>
+            
+        </div>
+        
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th>Date de Création</th>
+                <th>Assigné à</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Assuming leads is a list of lead objects passed from the view -->
+            {% for lead in leads %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ lead.first_name }} {{ lead.last_name }}</td>
+                <td>{{ lead.status }}</td>
+                <td>{{ lead.created_at }}</td>
+                <td>
+                    {% if lead.assigned_to %}
+                    {{ lead.assigned_to.username }}
+                    {% else %}
+                    <a href="{% url 'lead_assign' lead.id %}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-user-plus"></i> Prendre en charge
+                    </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'lead_edit' lead.id %}" class="btn btn-sm btn-warning">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    <a href="{% url 'lead_detail' lead.id %}" class="btn btn-sm btn-info">
+                        <i class="fas fa-info-circle"></i> Détails
+                    </a>
+                    <a href="{% url 'lead_delete' lead.id %}" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Fonction pour appliquer les filtres
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterForm = document.getElementById('filterForm');
+
+        function applyFilters() {
+            const formData = new FormData(filterForm);
+            const queryString = new URLSearchParams(formData).toString();
+            window.location.search = queryString; // Recharger la page avec les nouveaux paramètres
+        }
+
+        filterForm.addEventListener('change', applyFilters);
+
+        // Chargement dynamique des résultats (commenté pour exemple)
+        // function loadResults() {
+        //     fetch('/url-to-fetch-results?' + queryString)
+        //         .then(response => response.text())
+        //         .then(html => {
+        //             document.getElementById('leadsResults').innerHTML = html;
+        //         });
+        // }
+    });
+
+    // Utilisation de jQuery pour la recherche
+    $(document).ready(function() {
+        $('.search-bar-toggle').on('click', function() {
+            $('.search-input').toggleClass('show-search');
+        });
+
+        $('.search-input').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+
+            $('table tbody tr').each(function() {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.indexOf(searchTerm) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+
+
+
+        function toggleFilterMenu() {
+            const filterWrapper = document.querySelector('.filter-button-wrapper');
+            filterWrapper.classList.toggle('active');
+        }
+
+        $(document).ready(function() {
+            // Toggle the visibility of the search bar
+            $('#search-icon').on('click', function() {
+                $('#searchInput').toggleClass('show-search');
+            });
+
+            // Perform search functionality
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+
+                $('table tbody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.indexOf(searchTerm) !== -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+</script>
+</body>
+</html>
