@@ -9,7 +9,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <title>Dashboard Design | AsmrProg</title>
-<style>
+    <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
     * {
@@ -748,10 +748,11 @@
             </div>
 
             <div class="nav-links">
-                <a href= "/leads">Home</a>
+                <a>Home</a>
                 <a href="{% url 'lead_actions' %}">Leads</a>
                 <a href="{% url 'appointments_list' %}">Appointments</a>
                 <a href="{% url 'conversation_list'%}">Discussions</a>
+
             </div>
 
             <div class="right-section">
@@ -783,7 +784,7 @@
             
                     function logout() {
                         // Logique de déconnexion
-                        window.location.href = '/logout'; 
+                        window.location.href = '/logout'; // Assurez-vous que l'URL de déconnexion est correcte
                     }
                 </script>
                 
@@ -802,10 +803,10 @@
                         <div class="info">
                             <div>
                                 <h5 class="text-title">{{ lead.first_name }} {{ lead.last_name }}</h5>
-                                <p class="text-body">- {{ lead.status }}</p>
-                                {% if forloop.last %}
-                                <a href="{% url 'lead_actions' %}" class="see-more">Voir plus</a>
-                            {% endif %}
+                                <p class="text-body">- {{ lead.get_status_display }}</p>
+                                {% if forloop.last and forloop.counter == 4 %}
+                                    <a href="{% url 'lead_actions' %}" class="see-more">Voir plus</a>
+                                {% endif %}
                             </div>
                             <i class='bx bx-briefcase'></i>
                         </div>
@@ -815,8 +816,8 @@
                 {% empty %}
                     <p>Aucun lead disponible.</p>
                 {% endfor %}
-                
             </div>
+            
             
             </div>
             
@@ -839,9 +840,9 @@
             <div class="header">
                 <h4>Progrès et Statistiques</h4>
                 <div class="tabs">
-                    <a href="#" class="active" data-period="today">Aujourd'hui</a>
-                    <a href="#" data-period="week">Semaine</a>
-                    <a href="#" data-period="month">Mois</a>
+                    <a href="#" class="active">Aujourd'hui</a>
+                    <a href="#">Semaine</a>
+                    <a href="#">Mois</a>
                 </div>
             </div>
             <div class="details">
@@ -855,7 +856,7 @@
                     <div class="graph">
                         <canvas id="chart2"></canvas>
                     </div>
-                    <p>Réunions à Venir</p>
+                      <p>Réunions à Venir</p>
                 </div>
                 <div class="item">
                     <div class="graph">
@@ -864,103 +865,59 @@
                     <p>E-mails en Attente</p>
                 </div>
             </div>
+            
         </div>
-        
-        <script>
-            const tasksData = {{ tasks|safe }};
-            const meetingsData = {{ meetings|safe }};
-            const emailsData = {{ emails|safe }};
-            
-            function createChart(chartId, data) {
-                const ctx = document.getElementById(chartId).getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Aujourd\'hui', 'Semaine', 'Mois'],
-                        datasets: [{
-                            data: data,
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                        }]
-                    }
-                });
-            }
-            
-            document.querySelectorAll('.tabs a').forEach(tab => {
-                tab.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    document.querySelector('.tabs a.active').classList.remove('active');
-                    this.classList.add('active');
-        
-                    const period = this.getAttribute('data-period');
-        
-                    createChart('chart1', [
-                        tasksData[period],
-                    ]);
-        
-                    createChart('chart2', [
-                        meetingsData[period],
-                    ]);
-        
-                    createChart('chart3', [
-                        emailsData[period],
-                    ]);
-                });
-            });
-        
-            // Initialize charts with today's data
-            createChart('chart1', [tasksData.today]);
-            createChart('chart2', [meetingsData.today]);
-            createChart('chart3', [emailsData.today]);
-        </script>
       <div class="leads-pending-followup">
-    <<div class="leads-pending-followup">
-        <div class="header">
-            <h4>Leads en Attente de Suivi</h4>
-        </div>
-        {% for lead in leads_pending_followup %}
-            <div class="card">
-                <div class="image">
-                    <!-- Optionnel : Ajouter une image ou un avatar pour le lead -->
-                </div>
-                <p>{{ lead.first_name }} {{ lead.last_name }}</p>
-                <a href="{% url 'lead_detail' lead.id %}" class="btn-details">Voir Détails</a>
-            </div>
-        {% empty %}
-            <p>Aucun lead en attente de suivi.</p>
-        {% endfor %}
-    </div>
-    
-
-        
-        
-        <div class="important-announcements">
+    <div class="panels-container">
+        <div class="leads-pending-followup">
             <div class="header">
-                <h4>Annonces Importantes</h4>
+                <h4>Leads en Attente de Suivi</h4>
             </div>
-            <div class="card">
-                <div class="image">
-                    
+            {% for lead in leads_pending_followup %}
+                <div class="card">
+                    <div class="image">
+                        <!-- Optionnel : Ajouter une image ou un avatar pour le lead -->
+                    </div>
+                    <p>{{ lead.Prénom }} {{ lead.Nom }}</p>
+                    <a href="{% url 'lead_detail' lead.id %}" class="btn-details">Voir Détails</a>
                 </div>
-                <p>
-                    Lancement d'un nouveau produit cette semaine. Soyez prêt pour la grande 
-                    <span class="read-more" onclick="toggleReadMore('announcement1')"></span>
-                    <span id="announcement1" class="more-text">révélation et découvrez toutes les fonctionnalités qui vous attendent.</span>
-                </p>
-            </div>
-            <div class="card">
-                <div class="image">
-                    
+            {% empty %}
+                <p>Aucun lead en attente de suivi.</p>
+            {% endfor %}
+            {% if leads_pending_followup %}
+                <div class="view-more">
+                    <a href="{% url 'lead_actions' %}">Voir plus</a>
                 </div>
-                <p>
-                    Une maintenance planifiée aura lieu ce dimanche. Assurez-vous de
-                    <span class="read-more" onclick="toggleReadMore('announcement2')"></span>
-                    <span id="announcement2" class="more-text">sauvegarder vos données pour éviter toute perte pendant cette période.</span>
-                </p>
-            </div>
+            {% endif %}
         </div>
-        
-        
+    
+    <div class="important-announcements">
+        <div class="header">
+            <h4>Annonces Importantes</h4>
+        </div>
+        <div class="card">
+            <div class="image">
+                <!-- Optionnel : Ajouter une image ou un avatar pour l'annonce -->
+            </div>
+            <p>
+                Lancement d'un nouveau produit cette semaine. Soyez prêt pour la grande 
+                <span class="read-more" onclick="toggleReadMore('announcement1')">Lire plus</span>
+                <span id="announcement1" class="more-text">révélation et découvrez toutes les fonctionnalités qui vous attendent.</span>
+            </p>
+        </div>
+        <div class="card">
+            <div class="image">
+                <!-- Optionnel : Ajouter une image ou un avatar pour l'annonce -->
+            </div>
+            <p>
+                Une maintenance planifiée aura lieu ce dimanche. Assurez-vous de
+                <span class="read-more" onclick="toggleReadMore('announcement2')">Lire plus</span>
+                <span id="announcement2" class="more-text">sauvegarder vos données pour éviter toute perte pendant cette période.</span>
+            </p>
+        </div>
     </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
