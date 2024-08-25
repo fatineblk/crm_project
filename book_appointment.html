@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un Rendez-vous</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* Intégration des styles de Montserrat */
+        @font-face {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2') format('woff2');
+        }
+
+        /* Styles personnalisés */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: url('https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+        .wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .booking-cta {
+            margin-top: 120px; /* Ajustez la marge pour la position du titre */
+            text-align: center;
+        }
+
+        .booking-cta h1 {
+            font-weight: 600;
+            color: #003366; /* Couleur du texte */
+            font-size: 2.5rem;
+            animation: colorChange 5s infinite; /* Animation de la couleur */
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #333; /* Couleur initiale (noir foncé) */
+            }
+            50% {
+                color: #003366; /* Couleur de l'animation (bleu foncé) */
+            }
+            100% {
+                color: #333; /* Retour à la couleur initiale */
+            }
+        }
+
+        .form-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: calc(100vh - 100px); /* Ajustez la hauteur en fonction du titre */
+        }
+
+        form {
+            background: rgba(0, 0, 0, 0.4); /* Couleur noire avec transparence */
+            backdrop-filter: blur(10px); /* Effet glassy */
+            border-radius: 0px;
+            padding: 90px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            margin-top: 10px; /* Augmentation de la marge en haut */
+            margin-bottom: 0px;
+        }
+        
+        input[type="datetime-local"], 
+        input[type="text"], 
+        select, 
+        button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            font-size: 17px;
+            padding: 10px;
+            border-radius: 9px;
+        }
+
+        .form-btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-btn .submit-btn {
+            background-color: #ff4c5a;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: -23px;
+        }
+
+        .form-btn .submit-btn:hover {
+            background-color: #e43a47;
+        }
+
+        .back-to-list {
+            text-align: center; /* Centre le texte */
+            margin-top: 20px;
+        }
+        
+        .back-to-list p {
+            margin: 0; /* Supprime la marge par défaut du paragraphe */
+        }
+        
+        .back-to-list a {
+            color: #333; /* Couleur du texte (noir foncé) */
+            text-decoration: none; /* Supprime le soulignement du lien */
+            font-weight: 300; /* Optionnel: ajuste l'épaisseur de la police */
+            font-size: 16px; /* Optionnel: ajuste la taille de la police */
+        }
+        
+        .back-to-list a:hover {
+            text-decoration: underline; /* Ajoute un soulignement au survol du lien */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="form-wrapper">
+        <form method="post" action="{% url 'book_appointment'%}">
+            {% csrf_token %}
+            <div class="booking-cta">
+                {% if appointment %}
+                <h1>Modifier un Rendez-vous</h1>
+                {% else %}
+                <h1>Prendre un Rendez-vous</h1>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <span class="form-label">Sélectionner un Lead</span>
+                <select class="form-control" name="lead" required>
+                    
+                    {% for lead in form.fields.lead.queryset %}
+                        <option value="{{ lead.id }}" {% if lead.id == form.instance.lead.id %}selected{% endif %}>{{ lead }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Sélectionner la Date et l'Heure</span>
+                <input class="form-control" type="datetime-local" id="date" name="date" value="{{ form.instance.date|date:'Y-m-d\TH:i' }}" required>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Lieu</span>
+                {{ form.location }}
+            </div>
+            <div class="form-group">
+                <span class="form-label">Notes Supplémentaires (Optionnel)</span>
+                <input class="form-control" type="text" id="notes" name="notes" value="{{ form.instance.notes }}">
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="confirm" name="confirmed" {% if form.instance.confirmed %}checked{% endif %}>
+                    <label class="form-check-label" for="confirm">
+                        Confirmé
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-btn">
+                {% if appointment %}
+                <button class="submit-btn" type="submit">Modifier Rendez-vous</button>
+                {% else %}
+                <button class="submit-btn" type="submit">Prendre Rendez-vous</button>
+                {% endif %}
+            </div>
+            <div class="back-to-list">
+                <p><a href="{% url 'appointments_list' %}">Retour à la liste des rendez-vous</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
