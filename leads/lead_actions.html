@@ -760,14 +760,6 @@ label:last-child span {
             </div>
         </div>
     </div>
-   
-             
-
-            
-            
-        
-    
-
 </div>
 <div class="prog-status">
     <form method="get" action="{% url 'lead_actions' %}">
@@ -811,35 +803,7 @@ label:last-child span {
 <div class="header"> 
     <h4>Liste des leads</h4>
 </div>
-    <form method="get" action="">
-        <div class="mydict">
-            <div>
-                <label>
-                    <input type="radio" name="radio" checked="">
-                    <span>Tous</span>
-                </label>
-                <label>
-                    <input type="radio" name="radio">
-                    <span>Nouveau</span>
-                </label>
-                <label>
-                    <input type="radio" name="radio">
-                    <span>Contacté</span>
-                </label>
-                <label>
-                    <input type="radio" name="radio">
-                    <span>Converti</span>
-                </label>
-                <label>
-                    <input type="radio" name="radio">
-                    <span>Perdu</span>
-                </label>
-                
-            </div>
-            
-        </div>
-        
-    </form>
+    
     <table>
         <thead>
             <tr>
@@ -929,32 +893,6 @@ label:last-child span {
     });
 
 
-
-        function toggleFilterMenu() {
-            const filterWrapper = document.querySelector('.filter-button-wrapper');
-            filterWrapper.classList.toggle('active');
-        }
-
-        $(document).ready(function() {
-            // Toggle the visibility of the search bar
-            $('#search-icon').on('click', function() {
-                $('#searchInput').toggleClass('show-search');
-            });
-
-            // Perform search functionality
-            $('#searchInput').on('input', function() {
-                var searchTerm = $(this).val().toLowerCase();
-
-                $('table tbody tr').each(function() {
-                    var rowText = $(this).text().toLowerCase();
-                    if (rowText.indexOf(searchTerm) !== -1) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            });
-        });
 </script>
 </body>
 </html>
