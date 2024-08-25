@@ -871,6 +871,13 @@ label:last-child span {
         //         });
         // }
     });
+    function toggleFilterMenu() {
+        const filterWrapper = document.querySelector('.filter-button-wrapper');
+        filterWrapper.classList.toggle('active');
+    }
+
+
+
 
     // Utilisation de jQuery pour la recherche
     $(document).ready(function() {
