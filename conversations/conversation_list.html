@@ -196,54 +196,6 @@
         }
         
 
-        .filter-menu {
-            display: none;
-        }
-        
-        .filter-menu.active {
-            display: block;
-        }
-        
-
-        .filter-button-wrapper {
-            position: relative;
-        }
-
-        .filter-button-wrapper.active .filter-menu {
-            display: block;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            padding: 0 20px;
-            backdrop-filter: blur(5px); /* Appliquer un effet flou */
-            background: rgba(0, 0, 0, 0.3); /* Couleur de fond sombre semi-transparente pour l'effet glassy */
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Ajout d'une ombre légère */
-            border-radius: 10px; /* Coins arrondis */
-        }
-        
-        
-        table thead {
-            background-color: rgba(42, 42, 42, 0.8); /* Couleur de fond avec transparence pour l'effet glassy */
-            color: #FFF; /* Couleur du texte blanche */
-            backdrop-filter: blur(5px); /* Appliquer un effet flou au header */
-        }
-        
-        table th, table td {
-            padding: 12px 15px;
-            text-align: left;
-            color: #FFF; /* Couleur du texte blanche */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Bordure avec transparence pour un effet glassy */
-        }
-        
-        tr{
-            background-color: var(--app-content-secondary-color);}
-
-        th {
-            background-color: var(--table-header);
-        }
 
         .btn {
             padding: 4px 8px;
@@ -259,159 +211,6 @@
         .btn-primary:hover { background-color: var(--action-color-hover); }
         .btn-secondary { background-color: #6c757d; color: #fff; }
 
-        .bottom-container {
-            display: flex;
-            gap: 20px;
-            padding: 30px;
-        }
-
-        .bottom-container .prog-status,
-        .bottom-container .popular,
-        .bottom-container .upcoming {
-            background: #fefefe;
-            padding: 20px;
-            border-radius: 24px;
-        }
-
-        .bottom-container .prog-status {
-            width: 50%;
-        }
-
-        .bottom-container .prog-status .header,
-        .bottom-container .popular .header,
-        .bottom-container .upcoming .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .bottom-container .prog-status .header h4,
-        .bottom-container .popular .header h4,
-        .bottom-container .upcoming .header h4 {
-            font-weight: 600;
-        }
-
-        .bottom-container .prog-status .header .tabs {
-            background: #f3f3f3;
-            padding: 4px;
-            border-radius: 20px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .bottom-container .prog-status .header .tabs a {
-            padding: 4px 20px;
-            font-size: 12px;
-            color: #000;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .bottom-container .prog-status .header .tabs a.active {
-            background: #fff;
-        }
-
-        .bottom-container .prog-status .details {
-            display: flex;
-            margin-bottom: 60px;
-        }
-
-        .bottom-container .prog-status .details .item {
-            flex: 1;
-        }
-
-        .bottom-container .prog-status .details .item .graph {
-            height: 140px;
-            margin-bottom: 20px;
-        }
-
-        .bottom-container .prog-status .details .item p {
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .bottom-container .prog-status .details .item:nth-child(2) {
-            padding: 0 20px;
-            border-left: 1px solid #d2d3d6;
-            border-right: 1px solid #d2d3d6;
-        }
-
-        .bottom-container .prog-status .class-ranking {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border: 2px solid #d2d3d6;
-            border-radius: 10px;
-            padding: 10px 20px;
-        }
-
-        .bottom-container .prog-status .class-ranking .image {
-            width: 50px;
-            height: 50px;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-
-        .bottom-container .prog-status .class-ranking .info {
-            flex: 1;
-        }
-
-        .bottom-container .prog-status .class-ranking .info .name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .bottom-container .prog-status .class-ranking .info .rank {
-            font-size: 12px;
-            color: #5f6368;
-        }
-
-        .bottom-container .prog-status .class-ranking .action {
-            text-align: center;
-        }
-
-        .bottom-container .prog-status .class-ranking .action .btn-primary {
-            font-size: 12px;
-        }
-
-        .bottom-container .prog-status .class-ranking .action .btn-primary:hover {
-            background: #c5c5c5;
-            color: #000;
-        }
-
-        .bottom-container .popular ul,
-        .bottom-container .upcoming ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .bottom-container .popular ul li,
-        .bottom-container .upcoming ul li {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #e2e2e2;
-            padding: 10px 0;
-        }
-
-        .bottom-container .popular ul li:last-child,
-        .bottom-container .upcoming ul li:last-child {
-            border-bottom: none;
-        }
-
-        .bottom-container .popular ul li a,
-        .bottom-container .upcoming ul li a {
-            color: #000;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .bottom-container .popular ul li span,
-        .bottom-container .upcoming ul li span {
-            font-size: 12px;
-            color: #5f6368;
-        }
       .app-content-actions-wrapper {
             display: flex;
             justify-content: space-between;
@@ -535,23 +334,6 @@
 
 
 
-.btn-secondary:hover {
-    background-color: #5a6268; /* Darker shade for hover */
-}
-
-
-.btn-warning:hover {
-    background-color: #e0a800; /* Darker shade for hover */
-}
-
-.btn-info:hover {
-    background-color: #138496; /* Darker shade for hover */
-}
-
-
-.btn-danger:hover {
-    background-color: #c82333; /* Darker shade for hover */
-}
 .search-input {
     display: none;
     width: 200px;
@@ -589,101 +371,6 @@
 
 .dropdown-menu a:hover {
     background: #0ea5e9;
-}
-/* Wrapper for filter button and menu */
-.filter-button-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-/* Button styling */
-.filter-button {
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.filter-button i {
-    margin-right: 5px;
-}
-
-/* Filter menu styling */
-.filter-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 15px;
-    width: 220px;
-}
-
-/* Each filter item styling */
-.filter-item {
-    margin-bottom: 15px;
-}
-
-.filter-item:last-child {
-    margin-bottom: 0;
-}
-
-.filter-item label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #333;
-}
-
-.filter-item select,
-.filter-item input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-/* Show filter menu */
-.filter-button-wrapper.active .filter-menu {
-    display: block;
-}
-.mydict {
-    margin-top: 20px;
-}
-
-.mydict div {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 0.5rem;
-    justify-content: center;
-}
-
-.mydict input[type="radio"] {
-    clip: rect(0 0 0 0);
-    clip-path: inset(100%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-}
-
-.mydict input[type="radio"]:checked + span {
-    box-shadow: 0 0 0 0.0625em #0043ed;
-    background-color: #dee7ff;
-    z-index: 1;
-    color: #0043ed;
 }
 
 label span {
@@ -798,9 +485,48 @@ label:last-child span {
         font-size: 1em;
         display: none;
     }
-
     .search-input.show-search {
         display: block;
+    }
+
+
+    #searchDropdown {
+        position: absolute;
+        width: 200px;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: var(--app-content-secondary-color);
+        border: 1px solid var(--app-content-main-color);
+        border-radius: 4px;
+        display: none;
+        z-index: 10;
+        margin-left= 10px
+
+
+    }
+
+    #searchDropdown ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #searchDropdown li {
+        padding: 8px 16px;
+        cursor: pointer;
+        color: var(--app-content-main-color);
+    }
+
+    #searchDropdown li:hover {
+        background-color: var(--action-color-hover);
+    }
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
     }
     </style>
 
@@ -823,13 +549,45 @@ label:last-child span {
             <div class="right-section">
                 <i class='bx bx-bell'></i>
                 <i class='bx bx-search' id="search-icon" onclick="toggleSearch()"></i>
-                <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input" onclick="searchDropdown()">
+                    <div class="dropdown" id="searchDropdown">
+                        <ul id="userList">
+                            <!-- Users will be dynamically added here -->
+                            {% for user in users %}
+                            <li>{{ user.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
                 <script>
                     function toggleSearch() {
                         var searchInput = document.getElementById("searchInput");
                         searchInput.classList.toggle("show-search");
                         searchInput.focus();
                     }
+                    function searchDropdown() {
+                        const menu = document.getElementById('searchDropdown');
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    }
+                    
+                    $(document).ready(function() {
+                        $('#searchInput').on('input', function() {
+                            const query = $(this).val().toLowerCase(); // Get the input value
+                            $('#userList li').each(function() {
+                                const username = $(this).text().toLowerCase();
+                                if (username.includes(query)) {
+                                    $(this).show(); // Show the user if the input matches
+                                } else {
+                                    $(this).hide(); // Hide the user if the input doesn't match
+                                }
+                            });
+                        });
+                        $('#userList li').on('click', function() {
+                            $('#searchInput').val($(this).text()); // Set the selected value in the input
+                            $('#searchDropdown').hide(); // Hide the dropdown
+                        });
+                    });
                 </script>
                 <div class="profile">
                     <div class="info">
@@ -845,6 +603,7 @@ label:last-child span {
                         const menu = document.getElementById('dropdownMenu');
                         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
                     }
+
 
                     function logout() {
                         window.location.href = '/logout';
