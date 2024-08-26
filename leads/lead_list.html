@@ -750,9 +750,9 @@
             <div class="nav-links">
                 <a>Home</a>
                 <a href="{% url 'lead_actions' %}">Leads</a>
-                <a href="{% url 'appointments_list' %}">Appointments</a>
+                <a href="{% url 'appointments_list' %}">Rendez-vous</a>
                 <a href="{% url 'conversation_list'%}">Discussions</a>
-
+                <a href="{% url 'support_guide' %}">Guide de support</a>
             </div>
 
             <div class="right-section">
@@ -878,7 +878,7 @@
                     <div class="image">
                         <!-- Optionnel : Ajouter une image ou un avatar pour le lead -->
                     </div>
-                    <p>{{ lead.Prénom }} {{ lead.Nom }}</p>
+                    <p>{{ lead.first_name }} {{ lead.last_name }}</p>
                     <a href="{% url 'lead_detail' lead.id %}" class="btn-details">Voir Détails</a>
                 </div>
             {% empty %}
