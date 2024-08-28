@@ -7,133 +7,192 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f0f4f8;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        a {
+            text-decoration: none;
+            color: #f1f3f2;
+            font-size: 14px;
         }
 
+        canvas {
+            width: 100% !important;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        :root {
+            --app-bg: #031224;
+            --table-border: #1a2131;
+            --table-header: #1a2131;
+            --app-content-main-color: #fff;
+            --action-color: #2869ff;
+            --action-color-hover: #6291fd;
+            --app-content-secondary-color: #1d283c;
+            --filter-reset: #2c394f;
+            --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+
+        body {
+            background-image: url('https://images.unsplash.com/photo-1496096265110-f83ad7f96608?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        
+        
+        
+        
         .top-container {
-            background-color: #031224;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            background: #031224;
+            border-radius: 0 0 30px 30px;
+            padding-bottom: 10px;
         }
-
-        .nav {
+        .top-container .nav {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 20px;
-            background-color: #031224;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 20px 14px;
+            border-bottom: none;
         }
 
-        .nav .logo {
+        .top-container .nav .logo {
             display: flex;
             align-items: center;
-            font-size: 1.5em;
-            font-weight: bold;
+            gap: 6px;
         }
 
-        .nav .logo i {
-            margin-right: 10px;
+        .top-container .nav .logo i {
+            color: #f1f3f2;
+            font-size: 24px;
         }
 
-        .nav .logo a {
-            color: #fff;
-            text-decoration: none;
+        .top-container .nav .logo a {
+            font-size: 16px;
         }
 
-        .nav .nav-links {
+        .top-container .nav .nav-links {
             display: flex;
             gap: 20px;
         }
 
-        .nav .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1em;
-            transition: color 0.3s;
+        .top-container .nav .nav-links a {
+            color: #ccc;
+            transition: all 0.3s ease;
         }
 
-        .nav .nav-links a:hover {
-            color: #d4d4d4;
+        .top-container .nav .nav-links a:hover {
+            color: none;
         }
 
-        .nav .right-section {
+        .top-container .nav .right-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
-        .nav .right-section .search-input {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1em;
-            width: 200px;
-            display: none;
-            transition: opacity 0.3s ease-in-out;
+        .top-container .nav .right-section > i {
+            color: #f1f3f2;
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
         }
-
-        .nav .right-section .search-input.show-search {
-            display: block;
-        }
-
-        .nav .right-section .profile {
+        .profile {
             position: relative;
             display: flex;
             align-items: center;
+            gap: 10px;
+            margin: 20px;
         }
 
-        .nav .right-section .profile .info {
+        .profile .info {
             display: flex;
             align-items: center;
-            color: #fff;
+            gap: 10px;
+        }
+
+        .profile .info a {
+            font-size: 13px;
+            color: #f1f3f2;
+            text-decoration: none;
+        }
+
+        .profile .info i {
+            color: #f1f3f2;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .top-container .nav .right-section .profile {
+            display: flex;
+            align-items: center;
+            background: #1e293b;
+            padding: 0 10px;
+            border-radius: 50px;
+            gap: 10px;
+        }
+
+        .top-container .nav .right-section .profile .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-container .nav .right-section .profile .info img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #f1f3f2;
+        }
+
+        .top-container .nav .right-section .profile .info a {
+            font-size: 13px;
+        }
+
+        .top-container .nav .right-section .profile .info p {
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .top-container .nav .right-section .profile>i {
+            color: #f1f3f2;
+            font-size: 22px;
             cursor: pointer;
         }
 
-        .nav .right-section .profile .info i {
-            margin-left: 10px;
-        }
 
-        .nav .right-section .profile .dropdown-menu {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background: #fff;
-            color: #000;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            display: none;
-            min-width: 150px;
-            z-index: 1000;
-        }
 
-        .nav .right-section .profile .dropdown-menu a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #333;
-            border-bottom: 1px solid #ddd;
-        }
 
-        .nav .right-section .profile .dropdown-menu a:hover {
-            background-color: #f0f4f8;
-        }
+
+
+
+
+
+
 
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
+            max-width: 500px;
+            width: 100%;
             padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.2); /* Fond transparent avec effet glassy */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            backdrop-filter: blur(10px); /* Ajoute un effet de flou derrière le conteneur */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Bordure légère pour l'effet glassy */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
+    
 
         .header {
             font-size: 1.5em;
@@ -158,12 +217,12 @@
         }
 
         .message.sender {
-            background-color: #d1e7ff;
+            background-color: #34495e;
             align-self: flex-end;
         }
 
         .message.receiver {
-            background-color: #f1f1f1;
+            background-color: #6291fd;
         }
 
         .timestamp {
@@ -187,16 +246,26 @@
         }
 
         .message-input button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             background-color: #007bff;
             color: #fff;
-            border-radius: 8px;
+            border-radius: 20px;
             cursor: pointer;
-            margin-left: 10px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            font-size: 1em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+        
+        .message-input button:hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+        }
+        
+        .message-input button:active {
+            transform: scale(0.98);
+        }
+        
         .message-input button:hover {
             background-color: #0056b3;
         }
@@ -206,6 +275,80 @@
             display: flex;
             flex-direction: column-reverse;
         }
+
+
+
+
+
+ 
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                right: 20px;
+                top: 120%;
+                background: #1e293b;
+                color: #f1f3f2;
+                border-radius: 4px;
+                width: 120px;
+                z-index: 1000;
+                border: 1px solid var(--app-content-main-color);
+        
+                
+            }
+            
+            .dropdown-menu a {
+                color: #f1f3f2;
+                text-decoration: none;
+                display: block;
+                padding: 8px;
+                border-radius: 4px;
+            }
+            
+            .dropdown-menu a:hover {
+                background: #34495e;
+            }
+            @keyframes colorChange {
+                20% {
+                    color: #0000ff; /* Initial color (blue) */
+                }
+                50% {
+                    color: #000; /* Change to black */
+                }
+                
+                }
+                50% {
+                    color: #555555; /* Change to dark gray */
+                }
+                100% {
+                    color: #0000ff; /* Return to blue */
+                }
+            
+            
+        
+            @keyframes bounce {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+            .bx-x {
+                color: #031224;
+                font-size: 1.8rem;
+                cursor: pointer;
+                float: right; /* Float the icon to the right */
+                position: relative; /* Allow positioning adjustments */
+                top: 5px; 
+            }
+
+            
+
+
+
+            
+        
+
     </style>
 </head>
 <body>
@@ -218,12 +361,13 @@
             </div>
 
             <div class="nav-links">
-                <a>Home</a>
+                <a href= "/leads">Home</a>
                 <a href="{% url 'lead_actions' %}">Leads</a>
-                <a href="{% url 'appointments_list' %}">Appointments</a>
+                <a href="{% url 'appointments_list' %}">Rendez-vous</a>
                 <a href="{% url 'conversation_list'%}">Discussions</a>
+                <a href="{% url 'support_guide' %}">Guide de support</a>
             </div>
-
+            
             <div class="right-section">
                 <i class='bx bx-bell'></i> <!-- pour notifications -->
                 <i class='bx bx-search' id="search-icon" onclick="toggleSearch()"></i>
@@ -261,8 +405,15 @@
         </div>
 
 
+        
         <div class="container">
-            <div class="header">Conversation with {{ message.sender }}</div>
+
+
+            <div class="header">
+                <span class="bx bx-x" onclick="window.location.href='{% url 'conversation_list' %}'"></span>
+                Chat
+            </div>
+            
             <div class="messages">
                 {% for message in conversation.messages.all|dictsortreversed:"timestamp" %}
                 <div class="message {% if message.sender == user %}sender{% else %}receiver{% endif %}">
