@@ -383,55 +383,103 @@ label:last-child span {
     }
 
     .container {
-        margin-left: 270px; /* Adjust margin to account for sidebar width */
+        max-width: 500px;
+        width: 100%;
         padding: 20px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 900px;
-        width: calc(100% - 270px); /* Adjust width to fit beside sidebar */
-        margin-top: 80px; /* Space below the navbar */
+        background-color: rgba(255, 255, 255, 0.2); /* Fond transparent avec effet glassy */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
+        backdrop-filter: blur(10px); /* Ajoute un effet de flou derrière le conteneur */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Bordure légère pour l'effet glassy */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
-    .header {
-        background-color: #6291fd;
-        color: white;
-        padding: 15px;
-        text-align: center;
-        font-size: 20px;
-        font-weight: 600;
-        border-radius: 12px;
-    }
+/* Header Style */
+/* Header Style with Animation */
+.header {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff;
+    text-align: center;
+    animation: colorChange 5s infinite alternate; /* Animation qui change de couleur */
+}
 
-    .conversation-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+/* Définition de l'animation de changement de couleur */
+@keyframes colorChange {
+    0% {
+        color: #fff; /* Couleur de départ : blanc */
     }
+    25% {
+        color: #21177D; /* Rouge clair */
+    }
+    50% {
+        color: #000; /* Vert menthe */
+    }
+    75% {
+        color: #26619C; /* Bleu clair */
+    }
+    100% {
+        color: #0f056b; /* Rose */
+    }
+}
 
-    .conversation-list li {
-        border-bottom: 1px solid #ddd;
-        padding: 15px;
-        cursor: pointer;
-    }
 
-    .conversation-list li:last-child {
-        border-bottom: none;
-    }
+/* Conversation List Style */
+.conversation-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
-    .conversation-list li:hover {
-        background-color: #f1f1f1;
-    }
+/* Individual Conversation Style */
+.conversation-list li {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-    .participant-name {
-        font-weight: 500;
-    }
+.conversation-list li:hover {
+    background-color: #eaeaea;
+}
 
-    .last-message {
-        font-size: 14px;
-        color: #777;
-        margin-top: 5px;
-    }
+/* Participant Name Style */
+.participant-name {
+    font-weight: bold;
+    color: #333;
+    flex-grow: 1;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+/* Last Message Style */
+/* Last Message Style */
+.last-message {
+    display: flex;
+    flex-direction: column; /* Aligne les éléments en colonne */
+    color: #666;
+    font-size: 14px;
+    margin-top: 18px;
+}
+
+/* Timestamp Style */
+.timestamp {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+    align-self: flex-end; /* Espace entre le message et l'heure */
+}
+
+
 
     .right-section {
         display: flex;
@@ -524,6 +572,7 @@ label:last-child span {
         }
     }
     </style>
+
 
 
 </head>
@@ -620,31 +669,28 @@ label:last-child span {
     </div>
 </div>
 
-    
-    
-    <div class="container">
-        <div class="header">Your Conversations</div>
-        <ul class="conversation-list">
-            {% for conversation in conversations %}
-                {% if conversation.messages.exists %} <!-- Check if there are any messages in the conversation -->
-                <li onclick="location.href='{% url 'conversation_detail' user.id %}'">
-                    <span class="participant-name">
-                        {% for participant in conversation.participants.all %}
-                            {% if participant != user %}
-                                {{ participant.username }}
-                            {% endif %}
-                        {% endfor %}
-                    </span>
-                    <div class="last-message">
-                        {{ conversation.messages.last.content|truncatewords:10 }}
-                        <span class="timestamp">{{ conversation.messages.last.timestamp|date:"H:i" }}</span>
-                    </div>
-                </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </div>
-
+  <div class="container">
+    <div class="header">Your Conversations</div>
+    <ul class="conversation-list">
+        {% for conversation in conversations %}
+            {% if conversation.messages.exists %} <!-- Check if there are any messages in the conversation -->
+            <li onclick="location.href='{% url 'conversation_detail' conversation.id %}'">
+                <span class="participant-name">
+                    {% for participant in conversation.participants.all %}
+                        {% if participant != user %}
+                            {{ participant.username }}
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <div class="last-message">
+                    {{ conversation.messages.last.content|truncatewords:10 }}
+                    <span class="timestamp">{{ conversation.messages.last.timestamp|date:"H:i" }}</span>
+                </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 
 </body>
 </html>
