@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Conversation, Message
 from django.contrib.auth.models import User
 
+from .models import Conversation, Message
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.http import HttpResponseForbidden
 @login_required
 def conversation_list(request):
     conversations = Conversation.objects.filter(participants=request.user)
@@ -39,3 +43,17 @@ def start_conversation(request, user_id):
     conversation, created = Conversation.objects.get_or_create(participants__in=[request.user, other_user])
     conversation.participants.add(request.user, other_user)
     return redirect('conversation_detail', conversation_id=conversation.id)
+@login_required
+def delete_conversation(request, conversation_id):
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+
+    # Check if the current user is a participant in the conversation
+    if request.user not in conversation.participants.all():
+        return HttpResponseForbidden("You are not authorized to delete this conversation.")
+
+    if request.method == 'POST':
+        # Delete the conversation and its related messages
+        conversation.delete()
+        return redirect('conversation_list')  # Redirect to the conversation list after successful deletion
+
+    return render(request, 'conversations/conversation_confirm_delete.html', {'conversation':conversation})
