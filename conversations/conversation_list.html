@@ -574,7 +574,6 @@ label:last-child span {
     </style>
 
 
-
 </head>
 <body>
     <div class="top-container">
@@ -669,28 +668,32 @@ label:last-child span {
     </div>
 </div>
 
-  <div class="container">
-    <div class="header">Your Conversations</div>
-    <ul class="conversation-list">
-        {% for conversation in conversations %}
-            {% if conversation.messages.exists %} <!-- Check if there are any messages in the conversation -->
-            <li onclick="location.href='{% url 'conversation_detail' conversation.id %}'">
-                <span class="participant-name">
-                    {% for participant in conversation.participants.all %}
-                        {% if participant != user %}
-                            {{ participant.username }}
-                        {% endif %}
-                    {% endfor %}
-                </span>
-                <div class="last-message">
-                    {{ conversation.messages.last.content|truncatewords:10 }}
-                    <span class="timestamp">{{ conversation.messages.last.timestamp|date:"H:i" }}</span>
-                </div>
-            </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-</div>
+    
+    
+    <div class="container">
+        <div class="header">Vos Conversations</div>
+        <ul class="conversation-list">
+            {% for conversation in conversations %}
+            
+                {% if conversation.messages.exists %} <!-- Check if there are any messages in the conversation -->
+                <li onclick="location.href='{% url 'conversation_detail' user.id %}'">
+                    <span class="participant-name">
+                        {% for participant in conversation.participants.all %}
+                            {% if participant != user %}
+                                {{ participant.username }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <div class="last-message">
+                        {{ conversation.messages.last.content|truncatewords:10 }}
+                        <span class="timestamp">{{ conversation.messages.last.timestamp|date:"H:i" }}</span>
+                    </div>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
 
 </body>
 </html>
