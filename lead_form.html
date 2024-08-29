@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if lead %}Modifier{% else %}Ajouter{% endif %} un Lead</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        /* Importation de la police */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1546453667-8a8d2d07bc20?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+            background-size: cover;
+            color: #f1f3f2;
+        }
+    
+        .container {
+            padding: 38px;
+            background: rgba(255, 255, 255, 0.1); /* Couleur de fond semi-transparente pour l'effet glassy */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre pour l'effet verre */
+            backdrop-filter: blur(10px); /* Effet de flou pour renforcer le style glassy */
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 1.99rem;
+            text-align: center;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 13px;
+        }
+
+        .form-group label {
+            color: #ccc;
+            font-weight: 500;
+            display: block; /* Assure que le label est bien centré au-dessus du champ */
+        }
+
+        .form-control {
+            background-color: #1d283c;
+            color: #fff;
+            border: 1px solid #1a2131;
+            border-radius: 6px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 5px; /* Espace entre le label et le champ */
+        }
+
+        .form-control:focus {
+            border-color: #2869ff;
+            box-shadow: none;
+        }
+
+        .form-control::placeholder {
+            color: #888;
+        }
+
+        .btn-primary {
+            background-color: #2869ff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-weight: 500;
+            width: 100%; /* Pleine largeur du bouton */
+            box-sizing: border-box;
+            margin-top: 20px; /* Espace au-dessus du bouton */
+        }
+
+        .btn-primary:hover {
+            background-color: #1e54d4;
+        }
+        .bx-chevron-left-circle {
+            color: #fff;
+            font-size: 1.8rem;
+            margin-right: 20px;
+            margin-top: 5px; /* Fine-tune the position as needed */
+        }
+          
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>
+            <span class="bx bx-chevron-left-circle" onclick="window.location.href='{% url 'lead_actions' %}'"></span>
+            {% if lead %}Modifier{% else %}Ajouter{% endif %} un Lead
+        </h1>
+        <form method="POST" action="{% if lead %}{% url 'lead_edit' lead.id %}{% else %}{% url 'lead_add' %}{% endif %}">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="id_Prénom">Prénom</label>
+                    <input type="text" class="form-control" id="id_Prénom" name="Prénom" value="{{ lead.Prénom }}" required >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="id_Nom">Nom</label>
+                    <input type="text" class="form-control" id="id_Nom" name="Nom" value="{{ lead.Nom }}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="id_Email">Email</label>
+                    <input type="email" class="form-control" id="id_Email" name="Email" value="{{ lead.Email }}" required >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="id_Télephone">Téléphone</label>
+                    <input type="text" class="form-control" id="id_Télephone" name="Télephone" value="{{ lead.Télephone }}" required >
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="id_statut">Statut</label>
+                    <select class="form-control" id="id_statut" name="statut">
+                        <option value="nouveau" {% if lead.statut == 'nouveau' %}selected{% endif %}>Nouveau</option>
+                        <option value="contacté" {% if lead.statut == 'contacté' %}selected{% endif %}>Contacté</option>
+                        <option value="converti" {% if lead.statut == 'converti' %}selected{% endif %}>Converti</option>
+                        <option value="perdu" {% if lead.statut == 'perdu' %}selected{% endif %}>Perdu</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="id_source">Source</label>
+                    <select class="form-control" id="id_source" name="source">
+                        <option value="Site Web" {% if lead.source == 'Site Web' %}selected{% endif %}>Site Web</option>
+                        <option value="Publicité" {% if lead.source == 'Publicité' %}selected{% endif %}>Publicité</option>
+                        <option value="Référence" {% if lead.source == 'Référence' %}selected{% endif %}>Référence</option>
+                        <option value="Autre" {% if lead.source == 'Autre' %}selected{% endif %}>Autre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_notes">Notes</label>
+                <textarea class="form-control" id="id_notes" name="notes" rows="4" placeholder="Notes">{{ lead.notes }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+</body>
+</html>
