@@ -3,134 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Importer des Leads</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Interactions pour {{ lead.Prénom }} {{ lead.Nom }}</title>
 
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://images.unsplash.com/photo-1496096265110-f83ad7f96608?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1546453667-8a8d2d07bc20?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover; /* Ajuste l'image pour couvrir tout l'arrière-plan */
+            background-position: center; /* Centre l'image dans le conteneur */
+            background-repeat: no-repeat; /* Empêche la répétition de l'image */
         }
 
         .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5); /* Fond sombre semi-transparent pour améliorer la lisibilité */
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.8); /* Couleur de fond semi-transparente */
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            /* Effet de flou */
+            -webkit-backdrop-filter: blur(10px); /* Support pour Safari */
+        }
+        
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .interaction {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+
+        .interaction:last-child {
+            border-bottom: none;
+        }
+
+        .interaction h2 {
+            font-size: 1.2em;
+            margin: 0;
+            color: #555;
+        }
+
+        .interaction p {
+            margin: 5px 0;
+            color: #777;
+        }
+
+        .interaction time {
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        .gmail-link, .btn-primary {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #ea4335;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
         }
 
         .form-container {
-            background: rgba(0, 0, 0, 0.7); /* Fond sombre pour le formulaire */
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
+            margin-top: 20px;
+            display: none; /* caché par défaut */
         }
 
-        h1 {
+        .form-container.active {
+            display: block; /* affiché lorsqu'il est actif */
+        }
+
+        .form-container form {
             margin-bottom: 20px;
-            color: #f5f5f5;
-            font-size: 24px;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        input[type="file"] {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            width: 100%;
-            max-width: 300px;
-            background: #fff;
-            color: #333;
-        }
-
-        button {
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
             padding: 10px 20px;
-            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
-        button:hover {
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn:hover {
             background-color: #0056b3;
         }
 
-        .alert {
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 4px;
-            background-color: #f44336;
-            color: white;
-            display: none; /* Caché par défaut */
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .form-container {
-                width: 90%;
-                padding: 20px;
-            }
-
-            input[type="file"] {
-                max-width: 100%;
-            }
+        /* Ajout de styles pour aligner les boutons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
         bx-chevron-left-circle {
             color: #fff;
             font-size: 1.8rem;
             margin-right: 20px;
+            position: relative;
+            top: 5px; /* Adjust the value as needed */
+            align-items: center;
         }
     </style>
+    <script>
+        function toggleForm(formId) {
+            const formContainer = document.getElementById(formId);
+            formContainer.classList.toggle('active');
+        }
+
+        function toggleDetails(detailsId) {
+            const detailsContainer = document.getElementById(detailsId);
+            detailsContainer.classList.toggle('active');
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <div class="form-container">
-            <h1>                
-                <span class="bx bx-chevron-left-circle" onclick="window.location.href='{% url 'lead_actions' %}'"></span>
-                Importer des Leads
-
-            </h1>
-            <form method="post" enctype="multipart/form-data" onsubmit="return validateFile()">
+        <h1>
+            <span class="bx bx-chevron-left-circle" onclick="window.location.href='{% url 'lead_detail' lead.id %}'"></span>
+            Interactions pour {{ lead.Prénom }} {{ lead.Nom }}
+        </h1>
+        <h2> Appels téléphoniques</h2>
+        <div class="section">
+            <div class="button-group">
+                
+                <button class="btn" onclick="toggleForm('appel-form-container')">Ajouter un appel</button>
+                <a href="{% if excel_file_path %}{{ excel_file_path }}{% endif %}" download="lead_interactions.xlsx" class="btn-primary">
+                    Aperçu d'historiques des appels télephonique
+                </a>
+            </div>
+            
+            {% if interactions_telephonique %}
+                {% for interaction in interactions_telephonique %}
+                    <div class="interaction">
+                        <h2>{{ interaction.type }}</h2>
+                        <p><strong>Contacté le :</strong> <time>{{ interaction.date }}</time></p>
+                        <button class="btn-secondary" onclick="toggleDetails('details-{{ interaction.id }}')">Voir plus</button>
+                        <div id="details-{{ interaction.id }}" class="form-container">
+                            <p><strong>Détails :</strong> {{ interaction.details }}</p>
+                            <p><strong>Durée :</strong> {{ interaction.duree }}</p>
+                            <p><strong>Commentaires :</strong> {{ interaction.commentaires }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                
+            {% endif %}
+        </div>
+        
+        <div id="appel-form-container" class="form-container">
+            <form method="post">
                 {% csrf_token %}
-                <input type="file" name="csv_file" id="fileInput" accept=".json">
-                <button type="submit">Importer</button>
+                <input type="hidden" name="appel_form" value="1">
+                {{ appel_form.as_p }}
+                <button type="submit" class="btn">Enregistrer l'appel</button>
             </form>
-            <div class="alert" id="fileAlert">Le fichier doit être au format JSON !</div>
+        </div>
+
+        <div class="section">
+            <h2>Interactions par Email</h2>
+            {% if interactions_email %}
+                {% for interaction in interactions_email %}
+                    <div class="interaction">
+                        <h2>{{ interaction.type }}</h2>
+                        <p><strong>Contacté le :</strong> <time>{{ interaction.date }}</time></p>
+                        <button class="btn-secondary" onclick="toggleDetails('email-details-{{ interaction.id }}')">Voir plus</button>
+                        <div id="email-details-{{ interaction.id }}" class="form-container">
+                            <p>{{ interaction.details }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                
+            {% endif %}
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ lead.Email }}&su=Suivi de votre demande&body=Bonjour {{ lead.Prénom }}," class="gmail-link" target="_blank">
+                Envoyer un Email via Gmail
+            </a>
         </div>
     </div>
-
-    <script>
-        function validateFile() {
-            var input = document.getElementById('fileInput');
-            var fileName = input.value;
-            var allowedExtensions = /(\.json)$/i;
-
-            if (!allowedExtensions.exec(fileName)) {
-                document.getElementById('fileAlert').style.display = 'block';
-                return false;
-            } else {
-                document.getElementById('fileAlert').style.display = 'none';
-            }
-            return true;
-        }
-    </script>
 </body>
 </html>
