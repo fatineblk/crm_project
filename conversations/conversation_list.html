@@ -505,28 +505,38 @@ label:last-child span {
     .dropdown-menu {
         display: none;
         position: absolute;
-        right: 20px;
-        top: 120%;
-        background: #1e293b;
+        right: 0;
+        top: 116%;
+        background: #1a2b3c; /* Couleur de fond plus douce */
         color: #f1f3f2;
-        border-radius: 4px;
-        width: 120px;
+        border-radius: 8px;
+        padding: 3px; /* Réduire le padding pour un espacement plus compact */
+        width: 175px; /* Largeur augmentée pour un effet plus étendu horizontalement */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Réduire l'ombre pour un effet plus subtil */
         z-index: 1000;
-        border: 1px solid var(--app-content-main-color);
-
-        
+        transition: all 0.3s ease;
+        font-size: 12px; /* Taille de police réduite */
     }
     
     .dropdown-menu a {
         color: #f1f3f2;
         text-decoration: none;
         display: block;
-        padding: 8px;
+        padding: 3px 3px; /* Padding ajusté pour plus de confort */
         border-radius: 4px;
+        font-weight: 400; /* Poids de texte plus fin */
+        transition: background 0.3s ease;
+        margin-bottom: 4px; /* Espace entre les liens */
     }
     
     .dropdown-menu a:hover {
-        background: #34495e;
+        background: #2196f3; /* Couleur de survol plus lumineuse */
+        color: #ffffff;
+    }
+    
+    .dropdown-menu a:last-child {
+         /* Trait de séparation avant le dernier élément */
+        margin-top: 1px; /* Espace supplémentaire avant le dernier lien */
     }
     
 
@@ -590,10 +600,10 @@ label:last-child span {
                 <a href="{% url 'support_guide' %}">Guide de support</a>
             </div>
             <div class="right-section">
-                <i class='bx bx-bell'></i>
-                <i class='bx bx-search' id="search-icon" onclick="toggleSearch()"></i>
+                
+                <i class='bx bx-search' id="search-icon" onclick="toggleSearch(); searchDropdown()"></i>
                 <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input" onclick="searchDropdown()">
+                    <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input">
                     <div class="dropdown" id="searchDropdown">
                         <ul id="userList">
                             <!-- Users will be dynamically added here -->
@@ -606,49 +616,18 @@ label:last-child span {
                         </ul>
                     </div>
                 </div>
-                <script>
-                    function toggleSearch() {
-                        var searchInput = document.getElementById("searchInput");
-                        searchInput.classList.toggle("show-search");
-                        searchInput.focus();
-                        
-                    }
                 
-                    $(document).ready(function() {
-                        
-                        $('#searchInput').on('input', function() {
-                            const query = $(this).val().toLowerCase(); // Get the input value
-                            $('#userList li').each(function() {
-                                const username = $(this).text().toLowerCase();
-                                if (username.includes(query)) {
-                                    $(this).show(); // Show the user if the input matches
-                                } else {
-                                    $(this).hide(); // Hide the user if the input doesn't match
-                                }
-                            });
-                        });
                 
-                        // Close the dropdown if clicked outside
-                        $(document).on('click', function(event) {
-                            $('#searchDropdown').show(); // Show the dropdown on input
-
-                            if (!$(event.target).closest('.search-container').length) {
-                                $('#searchDropdown').hide();
-                            }
-                        });
-                
-                        $('#userList li').on('click', function() {
-                            $('#searchInput').val($(this).text()); // Set the selected value in the input
-                            $('#searchDropdown').hide(); // Hide the dropdown
-                        });
-                    });
-                </script>
                 <div class="profile">
                     <div class="info">
                         <a>Bienvenue {{ user.username }}</a>
                         <i class='bx bx-chevron-down' onclick="toggleMenu()"></i>
                     </div>
                     <div id="dropdownMenu" class="dropdown-menu">
+                        <!-- Lien visible uniquement pour les administrateurs -->
+                        {% if user.is_staff %}
+                            <a href="{% url 'admin_dashboard' %}" class="admin-link">Espace Admin</a>
+                        {% endif %}
                         <a href="#" class="logout" onclick="logout()">Déconnexion</a>
                     </div>
                 </div>
@@ -676,7 +655,7 @@ label:last-child span {
             {% for conversation in conversations %}
             
                 {% if conversation.messages.exists %} <!-- Check if there are any messages in the conversation -->
-                <li onclick="location.href='{% url 'conversation_detail' user.id %}'">
+                <li onclick="location.href='{% url 'conversation_detail' conversation.id %}'">
                     <span class="participant-name">
                         {% for participant in conversation.participants.all %}
                             {% if participant != user %}
@@ -693,6 +672,49 @@ label:last-child span {
             {% endfor %}
         </ul>
     </div>
+    <script>
+        function toggleSearch() {
+            var searchInput = document.getElementById("searchInput");
+            searchInput.classList.toggle("show-search");
+            searchInput.focus();  // Focus on input when toggled
+    
+            // Show the dropdown when the search input is focused or toggled
+            $('#searchDropdown').toggle(searchInput.classList.contains('show-search'));
+        }
+    
+        $(document).ready(function() {
+    
+            // Filter users based on input
+            $('#searchInput').on('input', function() {
+                const query = $(this).val().toLowerCase(); // Get the input value
+                $('#userList li').each(function() {
+                    const username = $(this).text().toLowerCase();
+                    if (username.includes(query)) {
+                        $(this).show(); // Show the user if the input matches
+                    } else {
+                        $(this).hide(); // Hide the user if the input doesn't match
+                    }
+                });
+    
+                // Show the dropdown when typing
+                $('#searchDropdown').show();
+            });
+    
+            // Close the dropdown if clicked outside
+            $(document).on('click', function(event) {
+                if (!$(event.target).closest('.search-container').length) {
+                    $('#searchDropdown').hide(); // Hide dropdown when clicking outside
+                }
+            });
+    
+            // Handle user selection from the list
+            $('#userList').on('click', 'li', function() {
+                const userId = $(this).data('user-id'); // Get the user ID from data attribute
+                window.location.href = `/conversations/${userId}/`; // Redirect to the conversation detail page
+                $('#searchDropdown').hide(); // Hide the dropdown after selection
+            });
+        });
+    </script>
 
 
 </body>
