@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,18 +181,22 @@
         .container {
             max-width: 500px;
             width: 100%;
+            height: 60vh;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.2); /* Fond transparent avec effet glassy */
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-family: 'Arial', sans-serif;
-            backdrop-filter: blur(10px); /* Ajoute un effet de flou derrière le conteneur */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Bordure légère pour l'effet glassy */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
         }
+        
     
 
         .header {
@@ -202,10 +207,15 @@
         }
 
         .messages {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-bottom: 20px;
+            max-height: 500px; /* Hauteur maximale du conteneur des messages */
+            overflow-y: auto; /* Activer le défilement lorsque le contenu dépasse */
+            overflow-x: hidden; 
+            display: flex;
+            flex-direction: column-reverse; /* Afficher les messages les plus récents en bas */
+            margin-bottom: 70px;
+            color: #f1f3f2;
         }
+        
 
         .message {
             display: flex;
@@ -223,6 +233,8 @@
 
         .message.receiver {
             background-color: #6291fd;
+            align-self: flex-start;
+
         }
 
         .timestamp {
@@ -233,7 +245,15 @@
 
         .message-input {
             display: flex;
-            align-items: center;
+            position: fixed;
+            top: 80%;
+            left: 30px;
+        }
+        .message-input .input-group {
+            width: 100%;
+            display: flex;
+            gap: 10px; /* Adjust spacing between elements */
+            margin-right: 100px;
         }
 
         .message-input textarea {
@@ -243,18 +263,20 @@
             border-radius: 8px;
             font-size: 1em;
             resize: none;
+
         }
 
         .message-input button {
             padding: 12px 24px;
             border: none;
-            background-color: #007bff;
+            background-color: #0e1352;
             color: #fff;
             border-radius: 20px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             font-size: 1em;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            justify-content: center;
         }
         
         .message-input button:hover {
@@ -265,7 +287,7 @@
         .message-input button:active {
             transform: scale(0.98);
         }
-        
+
         .message-input button:hover {
             background-color: #0056b3;
         }
@@ -281,32 +303,42 @@
 
 
  
-            .dropdown-menu {
-                display: none;
-                position: absolute;
-                right: 20px;
-                top: 120%;
-                background: #1e293b;
-                color: #f1f3f2;
-                border-radius: 4px;
-                width: 120px;
-                z-index: 1000;
-                border: 1px solid var(--app-content-main-color);
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 116%;
+            background: #1a2b3c; /* Couleur de fond plus douce */
+            color: #f1f3f2;
+            border-radius: 8px;
+            padding: 3px; /* Réduire le padding pour un espacement plus compact */
+            width: 175px; /* Largeur augmentée pour un effet plus étendu horizontalement */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Réduire l'ombre pour un effet plus subtil */
+            z-index: 1000;
+            transition: all 0.3s ease;
+            font-size: 12px; /* Taille de police réduite */
+        }
         
-                
-            }
-            
-            .dropdown-menu a {
-                color: #f1f3f2;
-                text-decoration: none;
-                display: block;
-                padding: 8px;
-                border-radius: 4px;
-            }
-            
-            .dropdown-menu a:hover {
-                background: #34495e;
-            }
+        .dropdown-menu a {
+            color: #f1f3f2;
+            text-decoration: none;
+            display: block;
+            padding: 3px 3px; /* Padding ajusté pour plus de confort */
+            border-radius: 4px;
+            font-weight: 400; /* Poids de texte plus fin */
+            transition: background 0.3s ease;
+            margin-bottom: 4px; /* Espace entre les liens */
+        }
+        
+        .dropdown-menu a:hover {
+            background: #2196f3; /* Couleur de survol plus lumineuse */
+            color: #ffffff;
+        }
+        
+        .dropdown-menu a:last-child {
+             /* Trait de séparation avant le dernier élément */
+            margin-top: 1px; /* Espace supplémentaire avant le dernier lien */
+        }
             @keyframes colorChange {
                 20% {
                     color: #0000ff; /* Initial color (blue) */
@@ -342,7 +374,18 @@
                 top: 5px; 
             }
 
+            .bx.bxs-trash {
+                color: #031224;
+                font-size: 1.8rem;
+                cursor: pointer;
+                float: right; /* Float the icon to the right */
+                position: relative; /* Allow positioning adjustments */
+                top: 5px; 
+            }
             
+            .bx.bxs-trash:hover {
+                color: #c0392b; /* Darker red on hover */
+            }
 
 
 
@@ -370,78 +413,100 @@
             
             <div class="right-section">
                 <i class='bx bx-bell'></i> <!-- pour notifications -->
-                <i class='bx bx-search' id="search-icon" onclick="toggleSearch()"></i>
-                <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input">
-                <script>
-                    function toggleSearch() {
-                        var searchInput = document.getElementById("searchInput");
-                        searchInput.classList.toggle("show-search");
-                        searchInput.focus(); 
-                    }
-                </script>
                 <div class="profile">
                     <div class="info">
-                        <a >Bienvenue {{ user.username }}</a>
+                        <a>Bienvenue {{ user.username }}</a>
                         <i class='bx bx-chevron-down' onclick="toggleMenu()"></i>
                     </div>
                     <div id="dropdownMenu" class="dropdown-menu">
+                        <!-- Lien visible uniquement pour les administrateurs -->
+                        {% if user.is_staff %}
+                            <a href="{% url 'admin_dashboard' %}" class="admin-link">Espace Admin</a>
+                        {% endif %}
                         <a href="#" class="logout" onclick="logout()">Déconnexion</a>
                     </div>
                 </div>
-            
                 <script>
                     function toggleMenu() {
                         const menu = document.getElementById('dropdownMenu');
                         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
                     }
-            
+
+
                     function logout() {
-                        // Logique de déconnexion
-                        window.location.href = '/logout'; // Assurez-vous que l'URL de déconnexion est correcte
+                        window.location.href = '/logout';
                     }
                 </script>
-                
             </div>
         </div>
 
 
-        
         <div class="container">
-
-
             <div class="header">
+                <!-- Bouton pour revenir à la liste des conversations -->
                 <span class="bx bx-x" onclick="window.location.href='{% url 'conversation_list' %}'"></span>
+                
+                <!-- Affichage du titre avec le nom de l'utilisateur sélectionné -->
+                {% if conversation.participants.count > 1 %}
+                Chat avec 
+                {% for participant in conversation.participants.all %}
+                    {% if participant != user %}
+                        {{ participant.username }}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
                 Chat
+            {% endif %}
+                
+                <!-- Bouton pour supprimer la conversation -->
+                <span class="bx bxs-trash-alt" onclick="window.location.href='{% url 'delete_conversation' conversation.id %}'"></span>
             </div>
             
+            
+            
+            
             <div class="messages">
+
                 {% for message in conversation.messages.all|dictsortreversed:"timestamp" %}
+                {% if message.content %}
+
                 <div class="message {% if message.sender == user %}sender{% else %}receiver{% endif %}">
-                    <p>{{ message.content }}</p>
-                    <div class="timestamp">{{ message.timestamp|date:"H:i" }}</div>
                     {% if message.file %}
                     <div class="file-attachment">
-                        <a href="{{ message.file.url }}" download>{{ message.file.name }}</a>
+                        <a href="{{ message.file.url }}" download="{{ message.file.name }}">{{ message.content }}</a>
                     </div>
+                    {% else %}
+                    <p>{{ message.content }}</p>
+
                     {% endif %}
+                    <div class="timestamp">{{ message.timestamp|date:"H:i" }}</div>
+                    
                 </div>
+                {% endif %}
+
                 {% endfor %}
             </div>
             
             <div class="message-input">
                 <form method="post" id="messageForm" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <textarea name="content" rows="1" placeholder="Type a message..." id="messageTextarea" ></textarea>
-                    
+                    <div class=input-group>
+                        <button class='bx bx-file' type="button" id="attachButton"></button>
+                    <textarea name="content" rows="1" placeholder="Type a message..." id="messageTextarea"></textarea>
                     <input type="file" name="file" id="fileInput" style="display:none;">
-                    <button class='bx bx-file' type="button" id="attachButton"></button>
-                    <button class='bx bxs-send' type="submit"></button>
+                    <button class='bx bxs-send' type="submit" id='sendMessageButton' ></button>
 
+                </div>
                 </form>
-                
             </div>
-            
+        
             <script>
+                fileInput.addEventListener('change', function() {
+                    if (fileInput.files.length > 0) {
+                        const fileName = fileInput.files[0].name;
+                        messageTextarea.value += ` ${fileName}`;
+                    }
+                });
                 document.getElementById('messageTextarea').addEventListener('keydown', function(event) {
                     if (event.key === 'Enter' && !event.shiftKey) { 
                         event.preventDefault(); 
@@ -452,15 +517,16 @@
                 document.getElementById('attachButton').addEventListener('click', function() {
                     document.getElementById('fileInput').click(); // Open the file dialog
                 });
+        
+
             </script>
         </div>
         
-    </div>
-
-    <!-- Auto-scroll to the latest message -->
-    <script>
-        const messagesContainer = document.querySelector('.messages');
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    </script>
+        <!-- Auto-scroll to the latest message -->
+        <script>
+            const messagesContainer = document.querySelector('.messages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        </script>
+        
 </body>
 </html>
