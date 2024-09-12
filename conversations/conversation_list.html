@@ -653,21 +653,20 @@ label:last-child span {
     <div class="header">Vos Conversations</div>
     <ul class="conversation-list">
         {% for conversation in conversations %}
-        <li onclick="location.href='{% url 'conversation_detail' conversation.participant.id %}'">
-            <span class="participant-name">
-                {{ conversation.participant.username }}
-            </span>
-            <div class="last-message">
-                {{ conversation.last_message.content|default:"No messages yet" }}
-                <span class="timestamp">
-                    {% if conversation.last_message %}
-                        {{ conversation.last_message.timestamp|date:"H:i" }}
-                    {% else %}
-                        No timestamp
-                    {% endif %}
+            <!-- Only display if there are messages in the conversation -->
+            {% if conversation.last_message %}
+            <li onclick="location.href='{% url 'conversation_detail' conversation.participant.id %}'">
+                <span class="participant-name">
+                    {{ conversation.participant.username }}
                 </span>
-            </div>
-        </li>
+                <div class="last-message">
+                    {{ conversation.last_message.content|truncatewords:10 }}
+                    <span class="timestamp">
+                        {{ conversation.last_message.timestamp|date:"H:i" }}
+                    </span>
+                </div>
+            </li>
+            {% endif %}
         {% endfor %}
     </ul>
 </div>
