@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -443,30 +442,21 @@
 
         <div class="container">
             <div class="header">
-                <!-- Bouton pour revenir à la liste des conversations -->
                 <span class="bx bx-x" onclick="window.location.href='{% url 'conversation_list' %}'"></span>
-                
-                <!-- Affichage du titre avec le nom de l'utilisateur sélectionné -->
                 {% if conversation.participants.count > 1 %}
-                Chat avec 
-                {% for participant in conversation.participants.all %}
-                    {% if participant != user %}
-                        {{ participant.username }}
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                Chat
-            {% endif %}
-                
-                <!-- Bouton pour supprimer la conversation -->
+                    Chat avec 
+                    {% for participant in conversation.participants.all %}
+                        {% if participant != user %}
+                            {{ participant.username }}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    Chat
+                {% endif %}
                 <span class="bx bxs-trash-alt" onclick="window.location.href='{% url 'delete_conversation' conversation.id %}'"></span>
             </div>
             
-            
-            
-            
             <div class="messages">
-
                 {% for message in conversation.messages.all|dictsortreversed:"timestamp" %}
                 {% if message.content %}
 
@@ -486,6 +476,7 @@
 
                 {% endfor %}
             </div>
+            
             
             <div class="message-input">
                 <form method="post" id="messageForm" enctype="multipart/form-data">
