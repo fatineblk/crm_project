@@ -10,23 +10,51 @@ from django.http import JsonResponse
 from django.http import HttpResponseForbidden
 @login_required
 def conversation_list(request):
+    # Fetch conversations where the current user is a participant
     conversations = Conversation.objects.filter(participants=request.user).prefetch_related('messages')
     users = User.objects.exclude(id=request.user.id)  # Exclude the current user from the list
-    return render(request, 'conversations/conversation_list.html', {'conversations': conversations, 'users': users})
+
+    # Prepare a list of participants for each conversation
+    conversation_data = []
+    for conversation in conversations:
+        other_participants = conversation.participants.exclude(id=request.user.id)
+        if other_participants.exists():
+            participant = other_participants.first()
+            last_message = conversation.messages.last() if conversation.messages.exists() else None
+            conversation_data.append({
+                'conversation': conversation,
+                'participant': participant,
+                'last_message': last_message
+            })
+
+    # Pass the conversation data and users to the template
+    return render(request, 'conversations/conversation_list.html', {
+        'conversations': conversation_data,
+        'users': users
+    })
 
 from django.shortcuts import redirect
 
 @login_required
-def conversation_detail(request, conversation_id):
-    
-    # Retrieve the conversation by its ID
-    conversation = get_object_or_404(Conversation, id=conversation_id)
+def conversation_detail(request, user_id):
+    other_user = get_object_or_404(User, id=user_id)
+
+    # Try to find a conversation between the logged-in user and the other user
+    conversation = Conversation.objects.filter(
+        participants=request.user
+    ).filter(
+        participants=other_user
+    ).first()
+
+    # If no conversation exists, create a new one
+    if not conversation:
+        conversation = Conversation.objects.create()
+        conversation.participants.add(request.user, other_user)
 
     if request.method == 'POST':
         content = request.POST.get('content')
         file = request.FILES.get('file')
 
-        # Create a new message if content or file is provided
         if content or file:
             Message.objects.create(
                 conversation=conversation,
@@ -34,26 +62,23 @@ def conversation_detail(request, conversation_id):
                 content=content,
                 file=file
             )
-
-        # Redirect to the same conversation detail page
-        return redirect('conversation_detail', conversation_id=conversation.id)
+        return redirect('conversation_detail', user_id=user_id)
 
     # Fetch messages in chronological order
     messages = conversation.messages.order_by('timestamp')
-    
-    # Render the conversation detail template with context
+
     return render(request, 'conversations/conversation_detail.html', {
         'conversation': conversation,
         'messages': messages
     })
 
+    
 @login_required
 def start_conversation(request, user_id):
     other_user = get_object_or_404(User, id=user_id)
     conversation, created = Conversation.objects.get_or_create(participants__in=[request.user, other_user])
     conversation.participants.add(request.user, other_user)
     return redirect('conversation_detail', conversation_id=conversation.id)
-    
 @login_required
 def delete_conversation(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
