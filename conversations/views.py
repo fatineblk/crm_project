@@ -3,11 +3,18 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Conversation, Message
 from django.contrib.auth.models import User
+from datetime import datetime
+from django.utils import timezone
 
 from .models import Conversation, Message
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponseForbidden
+
+def make_aware_if_naive(dt):
+    if timezone.is_naive(dt):
+        return timezone.make_aware(dt, timezone.get_current_timezone())
+    return dt
 @login_required
 def conversation_list(request):
     # Fetch conversations where the current user is a participant
@@ -26,7 +33,12 @@ def conversation_list(request):
                 'participant': participant,
                 'last_message': last_message
             })
+    now = timezone.now()  # Get the current time as timezone-aware
 
+    conversation_data.sort(
+        key=lambda x: make_aware_if_naive(x['last_message'].timestamp) if x['last_message'] else now,
+        reverse=True
+    )
     # Pass the conversation data and users to the template
     return render(request, 'conversations/conversation_list.html', {
         'conversations': conversation_data,
