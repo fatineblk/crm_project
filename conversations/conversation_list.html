@@ -52,6 +52,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
+            
         }
         
         
@@ -383,6 +384,8 @@ label:last-child span {
     }
 
     .container {
+        
+        max-height: 500px; /* Limit the height of the container */
         max-width: 500px;
         width: 100%;
         padding: 20px;
@@ -392,19 +395,39 @@ label:last-child span {
         font-family: 'Arial', sans-serif;
         backdrop-filter: blur(10px); /* Ajoute un effet de flou derrière le conteneur */
         border: 1px solid rgba(255, 255, 255, 0.3); /* Bordure légère pour l'effet glassy */
-        position: absolute;
-        top: 50%;
+        position: fixed;
+        top: 60%;
         left: 50%;
         transform: translate(-50%, -50%);
-    }
+        overflow-y: auto; /* Enable vertical scrolling */
 
+    }
+    .header-container {
+        max-width: 500px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.2); /* Same effect as the container */
+        border-radius: 10px;
+        max-height: 10%;
+        backdrop-filter: blur(10px); /* Keep glassy effect for the header container */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Border at the bottom */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 100%; /* Full width */
+        z-index: 10; /* Make sure it stays on top of other content */
+    }
+    
 /* Header Style */
 /* Header Style with Animation */
 .header {
     font-size: 28px;
+
     font-weight: bold;
     margin-bottom: 20px;
-    color: #fff;
+    color: #000;
     text-align: center;
     animation: colorChange 5s infinite alternate; /* Animation qui change de couleur */
 }
@@ -431,9 +454,12 @@ label:last-child span {
 
 /* Conversation List Style */
 .conversation-list {
+    margin-top: 60px; /* Adjust the margin to match the height of the header */
+
     list-style-type: none;
     padding: 0;
     margin: 0;
+    
 }
 
 /* Individual Conversation Style */
@@ -649,8 +675,10 @@ label:last-child span {
 
     
     
-<div class="container">
+<div class="header-container">
     <div class="header">Vos Conversations</div>
+</div>    <div class="container">
+
     <ul class="conversation-list">
         {% for conversation in conversations %}
             <!-- Only display if there are messages in the conversation -->
