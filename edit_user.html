@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Utilisateur</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css">
+    <style>
+        /* Style pour le fond de la page */
+        body {
+            background-image: url('https://images.unsplash.com/photo-1610993059271-092703922560?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #fff; /* Couleur du texte pour contraste avec l'image */
+            margin: 0; /* Supprimer les marges par défaut du body */
+            padding: 0; /* Supprimer les marges par défaut du body */
+        }
+
+        /* Style pour le conteneur principal avec effet glassy */
+        .container {
+            padding: 20px;
+            border-radius: 8px;
+            background: rgba(3, 34, 76, 0.8); /* Bleu nuit semi-transparent */
+            backdrop-filter: blur(10px); /* Effet de flou */
+            color: #fff; /* Couleur du texte pour contraste */
+            position: absolute;
+            top: 50%; /* Centrer verticalement */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px; /* Largeur maximale du conteneur */
+        }
+
+        /* Style pour le titre */
+        h2 {
+            text-align: center;
+            color: #fff; /* Couleur du titre */
+            margin-bottom: 20px;
+        }
+
+        /* Style pour les labels en gras */
+        .form-label {
+            font-weight: bold;
+        }
+
+        /* Style pour le bouton de retour */
+        .btn-back {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn-back i {
+            font-size: 1.5rem;
+            margin-right: 5px;
+        }
+
+        /* Style pour les messages d'erreur */
+        .alert {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Bouton de retour -->
+        <a href="{% url 'user_management' %}" class="btn-back">
+            <i class='bx bx-chevron-left'></i> 
+        </a>
+        <h2>Modifier Utilisateur</h2>
+        
+        <!-- Affichage des messages d'erreur -->
+        {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Nom d'utilisateur</label>
+                <input type="text" name="username" class="form-control" id="username" value="{{ user.username }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="email" value="{{ user.email }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="old_password" class="form-label">Ancien mot de passe</label>
+                <input type="password" name="old_password" class="form-control" id="old_password" placeholder="Entrez l'ancien mot de passe" autocomplete="off">
+            </div>
+            <div class="mb-3">
+                <label for="new_password" class="form-label">Nouveau mot de passe</label>
+                <input type="password" name="new_password" class="form-control" id="new_password" placeholder="Entrez un nouveau mot de passe" autocomplete="off">
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirmer le nouveau mot de passe</label>
+                <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirmez le nouveau mot de passe" autocomplete="off">
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer les changements</button>
+            <a href="{% url 'user_management' %}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+
+    <!-- JS de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

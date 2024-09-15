@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonces</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1546453667-8a8d2d07bc20?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .create-announcement-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .create-announcement-link:hover {
+            background-color: #2980b9;
+        }
+
+        .announcement-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .announcement-item {
+            max-height: 100px; /* Set a max-height initially */
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            overflow: hidden; /* Hide overflowing content */
+            position: relative;
+        }
+
+        .announcement-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            max-height: none; /* Allow height to expand */
+        }
+
+        .announcement-item h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .announcement-item p {
+            margin: 8px 0;
+            color: #34495e;
+            font-size: 0.9em;
+            line-height: 1.4;
+            max-height: 20px; /* Limit initial paragraph height */
+            overflow: hidden; /* Ensure text does not overflow the container */
+        }
+        .announcement-item:hover p {
+            white-space: normal; /* Allow text to wrap */
+            text-overflow: unset; /* Remove ellipsis on hover */
+            overflow: visible; /* Show the full text */
+            word-wrap: break-word; /* Ensure long words break correctly */
+            max-height: none; /* Remove height limitation */
+        }
+        .announcement-item small {
+            position: auto; /* Position it at the bottom */
+            display: block;
+            margin-top: 10px;
+            color: #7f8c8d;
+            font-size: 0.8em;
+        }
+
+        .bx-chevron-left-circle {
+            color: #34495e;
+            font-size: 1.8rem;
+            margin-right: 20px;
+            margin-top: 5px; /* Fine-tune the position as needed */
+        }
+
+        .announcement-actions {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .announcement-item:hover .announcement-actions {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85em;
+            transition: background-color 0.3s ease;
+            margin-right: 10px; /* Espacement entre les boutons */
+        }
+        
+        .btn-edit {
+            background-color: #27ae60; /* Couleur pour le bouton Modifier */
+            color: #fff;
+        }
+        
+        .btn-edit:hover {
+            background-color: #219150; /* Couleur au survol pour le bouton Modifier */
+        }
+        
+        .btn-delete {
+            background-color: #e74c3c; /* Couleur pour le bouton Supprimer */
+            color: #fff;
+        }
+        
+        .btn-delete:hover {
+            background-color: #c0392b; /* Couleur au survol pour le bouton Supprimer */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <h2>
+            {% if user.is_staff %}
+                <span class="bx bx-chevron-left-circle" onclick="window.location.href='{% url 'admin_dashboard' %}'"></span>
+            {% else %}
+                <span class="bx bx-chevron-left-circle" onclick="window.location.href='{% url 'lead_list' %}'"></span>
+            {% endif %}
+            Annonces
+        </h2>
+        {% if user.is_staff %}
+            <a href="{% url 'create_announcement' %}" class="create-announcement-link">Créer une Annonce</a>
+        {% endif %}
+        <ul class="announcement-list">
+            {% for item in user_announcements %}
+                <li class="announcement-item">
+                    <h3>{{ item.announcement.title }}</h3>
+                    <p>{{ item.announcement.content }}</p>
+                    <small>Publié par {{ item.announcement.author.username }} le {{ item.announcement.created_at }}</small>
+        
+                    {% if item.is_modified_by_user %}
+                        <!-- Afficher le message de modification seulement pour l'annonce modifiée -->
+                        <small style="color: red; font-weight: bold;">Cette annonce a été modifiée le : {{ item.announcement.updated_at }}</small>
+                    {% endif %}
+        
+                    {% if is_admin %}
+                        <div class="announcement-actions">
+                            <a href="{% url 'edit_announcement' item.announcement.id %}" class="btn btn-edit">Modifier</a>
+                            <a href="{% url 'delete_announcement' item.announcement.id %}" class="btn btn-delete">Supprimer</a>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        
+        
+        
+        
+        
+        
+        
+        
+    </div>
+</body>
+</html>

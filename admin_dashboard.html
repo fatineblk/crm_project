@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.min.css">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <style>
+        /* =========== Google Fonts ============ */
+        @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+        /* =============== Globals ============== */
+        * {
+            font-family: "Ubuntu", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue: #031224;
+            --white: #fff;
+            --gray: #f5f5f5;
+            --black1: #222;
+            --black2: #999;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+        }
+
+        /* =============== Navigation ================ */
+        .navigation {
+            position: fixed;
+            width:  75px;
+            height: 100%;
+            background: var(--blue);
+            border-left: 10px solid var(--blue);
+            transition: 0.5s;
+            overflow: hidden;
+            z-index: 1;
+            
+        }
+
+        .navigation.active {
+            width: 350px;
+        }
+
+        .navigation ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .navigation ul li {
+            position: relative;
+            width: 100%;
+            list-style: none;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+        }
+
+        .navigation ul li:hover,
+        .navigation ul li.hovered {
+            background-color: transparent;;
+        }
+
+
+        .navigation ul li a {
+            position: relative;
+            display: block;
+            width: 100%;
+            display: flex;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        
+
+        .navigation ul li a .icon {
+            position: relative;
+            display: block;
+            min-width: 60px;
+            height: 60px;
+            line-height: 75px;
+            text-align: center;
+        }
+
+        .navigation ul li a .icon ion-icon {
+            font-size: 1.75rem;
+        }
+
+        .navigation ul li a .title {
+            position: relative;
+            display: block;
+            padding: 0 10px;
+            height: 60px;
+            line-height: 60px;
+            text-align: start;
+            white-space: nowrap;
+        }
+
+       
+        
+        /* ===================== Main ===================== */
+        .main {
+            position: absolute;
+            width: calc(100% - 80px);
+            left: 80px;
+            min-height: 100vh;
+            background: var(--white);
+            transition: 0.5s;
+            z-index: 2;
+        }
+
+        .main.active {
+            width: calc(100% - 350px);
+            left: 350px;
+        }
+
+        .topbar {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            cursor: pointer;
+        }
+
+        .search {
+            position: relative;
+            width: 400px;
+            margin: 0 10px;
+        }
+
+        .search label {
+            position: relative;
+            width: 100%;
+        }
+
+        .search label input {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            padding: 5px 20px;
+            padding-left: 35px;
+            font-size: 18px;
+            outline: none;
+            border: 1px solid var(--black2);
+        }
+
+        .search label ion-icon {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            font-size: 1.2rem;
+        }
+
+        .user {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .user img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ======================= Cards ====================== */
+        .cardBox {
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 30px;
+        }
+        
+        .cardBox .card {
+            position: relative;
+            background: var(--white);
+            padding: 20px; /* Ajuster le padding pour uniformiser l'espacement */
+            border-radius: 20px;
+            display: flex;
+            align-items: center; /* Aligner les éléments au centre verticalement */
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+            min-height: 150px; /* Hauteur minimale pour uniformiser la taille des cartes */
+        }
+        
+        .cardBox .card .iconBx {
+            font-size: 3rem;
+            color: var(--black2);
+            margin-right: 13px; /* Espacement entre l'icône et le nombre */
+        }
+        
+        .cardBox .card .numbers {
+            font-weight: 500;
+            font-size: 2.5rem;
+            color: var(--blue);
+            margin-right: 10px; /* Réduire l'espacement entre le nombre et le titre */
+        }
+        
+        .cardBox .card .cardName {
+            color: var(--black2);
+            font-size: 1.1rem;
+            text-align: left; /* Alignement du texte du titre à gauche pour équilibrer l'espacement */
+            flex: 1; /* Permet au titre d'occuper l'espace restant */
+        }
+        
+        .cardBox .card:hover {
+            background: var(--blue);
+        }
+        
+        .cardBox .card:hover .numbers,
+        .cardBox .card:hover .cardName,
+        .cardBox .card:hover .iconBx {
+            color: var(--white);
+        }
+        
+        /* ================== Order Details List ============== */
+        .details {
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-gap: 30px;
+            /* margin-top: 10px; */
+        }
+
+        .details .recentOrders {
+            position: relative;
+            display: grid;
+            min-height: 500px;
+            background: var(--white);
+            padding: 20px;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+        }
+
+        .details .cardHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #001f3f; /* Bleu nuit */
+            }
+            50% {
+                color: #00aaff; /* Bleu ciel */
+            }
+            100% {
+                color: #007bff; /* Autre bleu (Bleu classique) */
+            }
+        }
+        
+        .cardHeader h2 {
+            font-weight: 600;
+            animation: colorChange 5s infinite;
+            margin-bottom: 10px; /* Durée de l'animation : 5 secondes, en boucle infinie */
+        }
+        
+
+        .cardHeader .btn {
+            position: relative;
+            padding: 5px 5px;
+            background: var(--blue);
+            text-decoration: none;
+            color: var(--white);
+            border-radius: 6px;
+            transition: background 0.3s ease; 
+        }
+        .cardHeader .btn:hover {
+             background-color: #004080;}
+
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .details table thead td {
+            font-weight: 600;
+        }
+
+        .details .recentOrders table tr {
+            color: var(--black1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .details .recentOrders table .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: var(--white);
+        }
+
+        .details .recentOrders table .status.delivered {
+            background-color: #4caf50;
+        }
+
+        .details .recentOrders table .status.pending {
+            background-color: #ff9800;
+        }
+
+        .details .recentOrders table .status.cancelled {
+            background-color: #f44336;
+        }
+
+        .details .recentOrders table td {
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .details .recentOrders table td .btn {
+            font-size: 14px;
+        }
+
+        /* =================== Add New Lead ================ */
+        .addLead {
+            position: relative;
+            padding: 20px;
+            background: var(--white);
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+        }
+
+        .addLead h2 {
+            color: var(--blue);
+        }
+
+        .addLead form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .addLead form input,
+        .addLead form select {
+            padding: 10px;
+            border: 1px solid var(--black2);
+            border-radius: 10px;
+        }
+
+        .addLead form button {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: var(--blue);
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .addLead form button:hover {
+            background: #1f1b6d;
+        }
+        .chartsBox {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Deux colonnes pour les graphiques */
+            grid-gap: 30px; /* Espacement entre les cartes */
+            margin-top: 30px; /* Espacement au-dessus des graphiques */
+        }
+        
+        .chartsBox .card {
+            background: var(--white); /* Couleur de fond de la carte */
+            padding: 30px; /* Espacement interne */
+            border-radius: 20px; /* Coins arrondis */
+            display: flex;
+            flex-direction: column; /* Dispose les éléments en colonne */
+            align-items: center; /* Centre horizontalement les éléments dans la carte */
+            justify-content: center; /* Centre verticalement les éléments dans la carte */
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08); /* Ombre portée */
+        }
+        
+        .chartsBox .card .chartContainer {
+            width: 100%; /* Prend toute la largeur disponible */
+            display: flex;
+            align-items: center; /* Centre verticalement le graphique */
+            justify-content: center; /* Centre horizontalement le graphique */
+            height: 250px; /* Hauteur du conteneur du graphique */
+        }
+        
+        .chartsBox .card .chartContainer canvas {
+            display: block; /* Empêche le canvas de déborder du conteneur */
+            max-width: 100%; /* Largeur maximale du graphique */
+            max-height: 100%; /* Hauteur maximale du graphique */
+        }
+        
+        .chartsBox .card .cardName {
+            color: var(--black2); /* Couleur du nom de la carte */
+            font-size: 1.1rem; /* Taille de la police */
+            margin-bottom: 20px; /* Espacement en dessous du nom de la carte */
+            text-align: center;
+            margin-top: 20px;  /* Centre le titre horizontalement */
+        }
+        
+        .addUser {
+            background-color: #ffffff; /* Fond blanc */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère pour l'effet de cadre */
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        @keyframes colorChange {
+            0% {
+                color: #002147; /* Bleu nuit */
+            }
+            50% {
+                color: #00aaff; /* Bleu ciel */
+            }
+            100% {
+                color: #005f99; /* Un autre bleu */
+            }
+        }
+        
+        .addUser h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            margin-top: 0px;
+            text-align: center;
+            animation: colorChange 5s infinite; /* Animation de 5 secondes en boucle */
+        }
+        
+        
+        .addUser form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centrer les éléments horizontalement */
+            flex: 1; /* Permet au formulaire de s'étendre pour remplir l'espace disponible */
+            max-width: 600px; /* Largeur maximale du formulaire pour le rendre plus lisible */
+            
+        }
+        
+        .addUser label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333; /* Texte des labels en gris foncé */
+        }
+        
+        .addUser input[type="text"],
+        .addUser input[type="email"],
+        .addUser input[type="password"] {
+            width: 100%; /* Tous les champs de même taille */
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd; /* Bordure grise claire */
+            background-color: #f9f9f9; /* Fond gris très clair */
+            color: #333; /* Texte en gris foncé */
+            font-size: 16px;
+            box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
+        }
+        
+        .addUser input[type="text"]:focus,
+        .addUser input[type="email"]:focus,
+        .addUser input[type="password"]:focus {
+            border-color: #00aaff; /* Bordure bleu clair au focus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 170, 255, 0.3); /* Effet lumineux bleu clair */
+        }
+        
+        .addUser button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top:20px;
+            background-color: #1a1a2e; /* Bleu nuit pour le bouton */
+            border: none;
+            color: #ffffff; /* Texte blanc */
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .addUser button:hover {
+            background-color: #004080; /* Bleu plus clair au survol */
+        }
+        
+        .addUser button:active {
+            background-color: #00aaff; /* Bleu ciel lors du clic */
+            outline: none;
+        }
+        
+        /* ============== Responsive =============== */
+        @media (max-width: 1000px) {
+            .container {
+                position: relative;
+            }
+
+            .navigation {
+                position: fixed;
+                width: 60px;
+                height: 100%;
+                background: var(--blue);
+                border-left: 10px solid var(--blue);
+                transition: 0.5s;
+                overflow: hidden;
+            }
+
+            .navigation.active {
+                width: 100%;
+            }
+
+            .main {
+                width: 100%;
+                left: 0;
+                transition: 0.5s;
+            }
+
+            .main.active {
+                width: calc(100% - 60px);
+                left: 60px;
+            }
+        }
+        /* Style pour la section d'annonces */
+.announcements {
+    width: 100%;
+    margin-left: 20px;
+}
+
+.announcements textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.announcements .btn {
+    margin-top: 10px;
+}
+
+.announcements-list {
+    margin-top: 20px;
+}
+
+.announcements-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.announcements-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+/* Pour déplacer le bouton de déconnexion vers le bas */
+.navigation ul li.logout {
+    position: absolute;
+    bottom: 20px; /* Ajustez la valeur selon votre préférence */
+    width: 100%;
+}
+
+.navigation ul li.leads {
+    position: absolute;
+    bottom: 350px; /* Ajustez cette valeur pour placer "Liste des leads" un peu plus en haut */
+    width: 100%;
+}
+
+.navigation ul li.appointment {
+    position: absolute;
+    bottom: 300px; /* Place "Liste des rendez-vous" juste en dessous de "Liste des leads" */
+    width: 100%;
+}
+
+.navigation ul li.announcement {
+    position: absolute;
+    bottom: 250px; /* Place "Partager des annonces" juste en dessous de "Liste des rendez-vous" */
+    width: 100%;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="{% url 'lead_list' %}">
+                        <div class="icon"><ion-icon name="home-outline"></ion-icon></div>
+                        <div class="title">Tableau de bord</div>
+                    </a>
+                </li>
+                <li class="leads">
+                    <a href="{% url 'lead_actions' %}">
+                        <div class="icon"><ion-icon name="people-outline"></ion-icon></div>
+                        <div class="title">Liste des leads</div>
+                    </a>
+                </li>
+            
+                
+                <li class="appointment">
+                    <a href="{% url 'appointments_list' %}">
+                        <div class="icon"><ion-icon name="calendar-outline"></ion-icon></div>
+                        <div class="title">Liste des rendez-vous</div>
+                    </a>
+                </li>
+                <li class='announcement'>
+                    <a href="{% url 'announcements_list' %}">
+                        <div class="icon">
+                            <ion-icon name="notifications-outline"></ion-icon>
+                        </div>
+                        <div class="title">Liste des annonces</div>
+                    </a>
+                    
+                </li>
+                <li class='user-management' style="margin-top: 285px;">
+                    <a href="{% url 'user_management' %}">
+                        <div class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </div>
+                        <div class="title">Gestion des utilisateurs</div>
+                    </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                <li class="logout">
+                    <a href="{% url 'logout' %}">
+                        <div class="icon"><ion-icon name="log-out-outline"></ion-icon></div>
+                        <div class="title">Se déconnecter</div>
+                    </a>
+                </li>
+                
+                
+            </ul>
+        </div>
+
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle" id="menu-toggle"><ion-icon name="menu-outline"></ion-icon></div>
+                
+            </div>
+
+            <div class="cardBox">
+                <div class="card">
+                    <div class="iconBx">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </div>
+                    <div class="numbers">{{ leads_count }}</div>
+                    <div class="cardName">Leads</div>
+                </div>
+                <div class="card">
+                    <div class="iconBx">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                    </div>
+                    <div class="numbers">{{ appointments_count }}</div>
+                    <div class="cardName">Rendez-vous</div>
+                </div>
+                <div class="card">
+                    <div class="iconBx">
+                        <ion-icon name="stats-chart-outline"></ion-icon>
+                    </div>
+                    <div class="numbers">{{ taux_conversion_global|floatformat:2 }}%</div>
+                    <div class="cardName">Taux de Conversion Global</div>
+                </div>
+                <div class="card">
+                    <div class="iconBx">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                    </div>
+                    <div class="numbers">{{ leads_pending_followup }}</div>
+                    <div class="cardName">Leads en Attente de Suivi</div>
+                </div>
+                
+                
+               
+            </div>
+            <div class="chartsBox">
+                <div class="card">
+                    <div class="chartContainer">
+                        <canvas id="chart1"></canvas> <!-- Premier graphique -->
+                    </div>
+                    <div class="cardName">Performance des utilisateurs</div>
+                    {% include 'admin_chart1.html' %}
+                </div>
+                
+                <div class="card">
+                    <div class="chartContainer">
+                        <canvas id="chart2"></canvas> <!-- Deuxième graphique -->
+                    </div>
+                    <div class="cardName">Répartition des Leads par Source</div>
+                    
+                    <!-- Inclure le fichier séparé avec le script -->
+                    {% include 'admin_chart2.html' %}
+                </div>
+                <div class="card">
+                    <div class="chartContainer">
+                        <canvas id="chart3"></canvas> <!-- Premier graphique -->
+                    </div>
+                    <div class="cardName">Répartition des Leads par Utilisateur</div>
+                    {% include 'admin_chart3.html' %}
+                </div>
+                <div class="card">
+                    <div class="chartContainer">
+                        <canvas id="chart4"></canvas> <!-- Premier graphique -->
+                    </div>
+                    <div class="cardName">Comparaison des Leads : Nouveaux et Perdus</div>
+                    {% include 'admin_chart4.html' %}
+                </div>
+            </div>
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Leads Récents</h2>
+                        <a href="{% url 'lead_actions' %}" class="btn">Voir tous</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Nom&Prénom</td>
+                                <td>Source</td>
+                                <td>Statut</td>
+                                <td>Date de création</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in recent_leads %}
+                            <tr>
+                                <td>{{ lead.Prénom }} {{ lead.Nom }}</td>
+                                <td>{{ lead.source }}</td>
+                                <td class="statut {{ lead.statut|lower }}">{{ lead.statut }}</td>
+                                <td>{{ lead.crée|date:"Y-m-d" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">Aucun lead récent disponible</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+            
+            <div class="addUser">
+                <h2>Ajouter un Nouvel Utilisateur</h2>
+                <form method="post" autocomplete="off">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Ajouter Utilisateur</button>
+                </form>
+            </div>
+       
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Ionicons -->
+    <script src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    
+    
+    <!-- Inclure le fichier séparé avec le script pour Chart 2 -->
+    {% include 'admin_chart2.html' %}
+    
+ 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Assurez-vous que la partie principale est affichée en premier
+            document.querySelector('.main').style.display = 'block';
+            
+            // Masquer la barre de navigation au chargement de la page
+            document.querySelector('.navigation').classList.remove('active');
+            document.querySelector('.main').classList.remove('active');
+    
+            // Ajoutez un gestionnaire d'événements pour le menu
+            document.getElementById('menu-toggle').addEventListener('click', function () {
+                document.querySelector('.main').classList.toggle('active');
+                document.querySelector('.navigation').classList.toggle('active');
+            });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/lead_count/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('lead-count').textContent = data.lead_count;
+                })
+                .catch(error => console.error('Error fetching lead count:', error));
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<canvas id="campaignChart" width="400" height="200"></canvas>
+
+</body>
+
+</html>
